@@ -6,13 +6,12 @@
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}html{-webkit-text-size-adjust:100%}</style>
 </head><body><title>Mo &amp; Pob in Chiang Mai</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Mali:wght@500;600&family=Anuphan:wght@400;500&display=swap">
+<style>@font-face{font-family:"Instrument Sans";src:url(fonts/isans.woff2) format("woff2");font-weight:400 600;font-style:normal;font-display:swap}@font-face{font-family:"Instrument Serif";src:url(fonts/iserif.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}@font-face{font-family:"Instrument Serif";src:url(fonts/iserif-i.woff2) format("woff2");font-weight:400;font-style:italic;font-display:swap}@font-face{font-family:"DM Mono";src:url(fonts/dmmono-400.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}@font-face{font-family:"DM Mono";src:url(fonts/dmmono-500.woff2) format("woff2");font-weight:500;font-style:normal;font-display:swap}@font-face{font-family:"Anuphan";src:url(fonts/anuphan.woff2) format("woff2");font-weight:400 500;font-style:normal;font-display:swap}@font-face{font-family:"Mali";src:url(fonts/mali-500.woff2) format("woff2");font-weight:500;font-style:normal;font-display:swap}@font-face{font-family:"Mali";src:url(fonts/mali-600.woff2) format("woff2");font-weight:600;font-style:normal;font-display:swap}</style>
+<link rel="preload" href="fonts/isans.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 /* Layout: one phone-width column (max 430px), a single view at a time, bottom tab bar. Minimal: white ground, hairlines, palette used sparingly. */
 :root{
-  --bg:#E3EAED; --ink:#04252F; --muted:#526770; --line:#CCD7DC; --mist:#D8E1E5;
+  --bg:#E3EAED; --ink:#04252F; --muted:#41575F; --line:#CCD7DC; --mist:#D8E1E5;
   --petrol:#0C5070; --sage:#6A9168; --lime:#B5D22F; --on-lime:#04252F; --ring:#B9C4CB;
   --serif:"Instrument Serif",Georgia,serif; --sans:"Instrument Sans","Anuphan",system-ui,-apple-system,sans-serif; --mono:"DM Mono",ui-monospace,Menlo,monospace; --thai:"Anuphan","Noto Sans Thai",system-ui,sans-serif; --kham:"Mali","Anuphan",system-ui,sans-serif;
 }
@@ -23,7 +22,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 a{color:var(--petrol);text-decoration:none}
 :focus-visible{outline:2px solid var(--petrol);outline-offset:3px;border-radius:4px}
 .app{max-width:430px;margin:0 auto;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px));padding-block:28px calc(120px + env(safe-area-inset-bottom,0px))}
-.lab{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+.lab{font-family:var(--mono);font-size:12px;letter-spacing:.05em;color:var(--muted);text-transform:uppercase}
 .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
 .serif{font-family:var(--serif);font-style:italic;font-weight:400}
 h1{font-size:34px;font-weight:500;letter-spacing:-.02em;line-height:1.1;margin:10px 0 0;text-wrap:balance}
@@ -52,18 +51,14 @@ h1 .serif{color:var(--petrol)}
 .next .sub{font-size:14px;color:var(--muted)}
 .chev{font-size:26px;color:var(--muted);line-height:1}
 .sh{display:flex;justify-content:space-between}
-.todo{display:flex;align-items:center;gap:12px;min-height:58px;border-top:1px solid var(--line)}
-.todo:first-of-type{margin-top:8px}
-.todo:last-child{border-bottom:1px solid var(--line)}
-.todo .tx,.dayrow .tx{flex:1;min-width:0;display:flex;flex-direction:column}
-.todo .nm,.dayrow .nm{font-weight:500}
-.todo .mt,.dayrow .mt{font-size:13px;color:var(--muted)}
-.todo.done .ck{background:var(--sage);border-color:var(--sage)} .todo.done .ck svg{opacity:1;transform:none} .todo.done .nm{color:var(--muted);text-decoration:line-through}
+.dayrow .tx{flex:1;min-width:0;display:flex;flex-direction:column}
+.dayrow .nm{font-weight:500}
+.dayrow .mt{font-size:13px;color:var(--muted)}
 .days4{margin-top:8px}
 .dayrow{display:flex;align-items:center;gap:14px;width:100%;text-align:left;min-height:62px;border-top:1px solid var(--line)}
 .dayrow:last-child{border-bottom:1px solid var(--line)}
 .dd{width:40px;display:flex;flex-direction:column;align-items:center;line-height:1.1}
-.dd b{font-size:20px;font-weight:600} .dd span{font-size:11px;color:var(--muted);text-transform:uppercase;font-family:var(--mono)}
+.dd b{font-size:20px;font-weight:600} .dd span{font-size:12px;color:var(--muted);text-transform:uppercase;font-family:var(--mono)}
 .dc{font-size:13px;color:var(--muted)}
 
 .names{font-family:var(--serif);font-style:italic;font-size:58px;line-height:1;color:var(--petrol);display:flex;gap:.22em;flex-wrap:wrap}
@@ -87,8 +82,6 @@ h1 .serif{color:var(--petrol)}
 .who{display:flex;gap:10px;align-items:center;margin-top:10px}
 .pill{height:40px;padding:0 16px;border-radius:20px;border:1px solid var(--line)}
 .pill[aria-pressed="true"]{background:var(--lime);border-color:var(--lime);color:var(--on-lime);font-weight:600}
-.sync{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin-top:14px}
-.sync i{width:6px;height:6px;border-radius:3px;background:var(--ring)} .sync i.on{background:var(--sage)}
 
 /* day tabs */
 .dayart{position:relative;margin:10px calc(-1 * max(24px,env(safe-area-inset-right,0px))) 0 calc(-1 * max(24px,env(safe-area-inset-left,0px)));overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent,#000 9%,#000 91%,transparent),linear-gradient(to bottom,transparent,#000 9%,#000 91%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent,#000 9%,#000 91%,transparent),linear-gradient(to bottom,transparent,#000 9%,#000 91%,transparent);mask-composite:intersect}
@@ -165,6 +158,7 @@ textarea{width:100%;margin-top:8px;font:inherit;font-size:15px;border:1px solid 
 .pwrap img{display:block;width:1584px;height:600px;max-width:none}
 .rp.hid{opacity:0}
 .rp.popnow{animation:pop .45s cubic-bezier(.3,1.6,.5,1) both;transform-box:fill-box;transform-origin:center bottom}
+.pwrap img.vh{position:absolute;left:0;top:0;max-width:none;display:block;pointer-events:none;transform-origin:50% 50%;will-change:transform,opacity;opacity:0}
 .pwrap svg{position:absolute;inset:0;width:100%;height:100%}
 .pwrap .route{stroke:#B5D22F;stroke-width:7;filter:drop-shadow(0 2px 0 rgba(4,37,47,.45))}
 .bob{animation:bob 1.6s ease-in-out infinite;transform-box:fill-box}
@@ -206,9 +200,6 @@ textarea{width:100%;margin-top:8px;font:inherit;font-size:15px;border:1px solid 
 .it .nm{font-weight:500;overflow-wrap:anywhere}
 .it .mt{font-size:13px;color:var(--muted)}
 .it .mt a{color:var(--petrol)}
-.ck{width:26px;height:26px;border-radius:13px;border:1px solid var(--ring);flex:none;display:grid;place-items:center;transition:background .25s,border-color .25s}
-.ck svg{width:12px;height:12px;stroke:#fff;opacity:0;transform:scale(.4);transition:opacity .2s,transform .3s cubic-bezier(.3,1.6,.5,1)}
-.it.done .ck{background:var(--sage);border-color:var(--sage)} .it.done .ck svg{opacity:1;transform:none}
 .it.done .nm{color:var(--muted)}
 
 /* tab bar: floating deep-teal pill */
@@ -331,7 +322,7 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:none}
 .bk{margin-top:8px}
 .bkr{display:flex;align-items:center;gap:12px;min-height:58px;border-top:1px solid var(--line)}
 .bkr:last-child{border-bottom:1px solid var(--line)}
-.bkd{width:46px;flex:none;display:flex;flex-direction:column;line-height:1.15} .bkd b{font-family:var(--mono);font-size:13px;font-weight:500} .bkd span{font-size:11px;color:var(--muted)}
+.bkd{width:46px;flex:none;display:flex;flex-direction:column;line-height:1.15} .bkd b{font-family:var(--mono);font-size:13px;font-weight:500} .bkd span{font-size:12px;color:var(--muted)}
 .bkr .tx{flex:1;min-width:0;display:flex;flex-direction:column} .bkr .nm{font-weight:500} .bkr .mt{font-size:13px;color:var(--muted)}
 .chip{flex:none;white-space:nowrap;font-size:12px;font-weight:600;padding:4px 10px;border-radius:12px}
 .chip.ok{background:#E3EDD8;color:#4E7A4C} .chip.pend{background:#F6ECD3;color:#8A6A1E}
@@ -344,6 +335,15 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:none}
 .ph .rm{font-family:var(--thai);font-size:13px;color:var(--petrol);margin-top:3px}
 .ph .en{font-family:var(--serif);font-style:italic;font-size:15px;line-height:1.3;color:var(--muted);margin-top:8px}
 .ph:active{transform:scale(.97)}
+.ph{position:relative;cursor:pointer}
+.ph .en{padding-right:30px}
+.say{position:absolute;right:9px;bottom:9px;width:32px;height:32px;border-radius:16px;display:grid;place-items:center;background:#EEF3F5;color:var(--petrol);border:0;transition:transform .15s,background-color .2s,color .2s}
+.say:active{transform:scale(.9)}
+.say.talk{background:var(--petrol);color:#fff}
+.say .w1,.say .w2{transition:opacity .2s}
+.say.talk .w1{animation:sw 0.8s ease-in-out infinite}.say.talk .w2{animation:sw 0.8s ease-in-out .2s infinite}
+@keyframes sw{0%,100%{opacity:.25}50%{opacity:1}}
+
 .ph .th.sm{font-size:min(18px,4.5vw);line-height:1.5;white-space:nowrap}
 .bigphr{position:fixed;inset:0;z-index:60;background:rgba(4,37,47,.55);display:flex;align-items:center;justify-content:center;padding:24px;animation:fadein .2s ease both}
 .bigphr div{background:#fff;border-radius:24px;padding:36px 24px;text-align:center;max-width:360px;width:100%;animation:sheet .3s cubic-bezier(.2,.8,.2,1) both}
@@ -483,27 +483,109 @@ function iconFor(k,kind,title){
   return "khaosoi";
 }
 const ico=(n,cls="")=>`<img class="ico ${cls}" src="ic/${n}.webp" alt="" width="80" height="80" loading="lazy">`;
-/* ---------- shared state ---------- */
-let marks={}; // id -> {done, note}
-let col=null, synced=false;
+const marks={}; // ticks were removed; kept empty so older render paths stay safe
 
-const saveLocal=()=>{try{localStorage.setItem("mp-marks",JSON.stringify(marks))}catch(e){}};
-const pend={};
-async function push(id){
-  saveLocal(); if(!col) return;
-  if(pend[id]){pend[id].again=true;return} pend[id]={again:false};
-  try{ do{ pend[id].again=false; const m=marks[id]||{}; await col.doc(id).set({done:!!m.done,note:m.note||""}); }while(pend[id].again); }
-  catch(e){ toast(e&&e.code==="invalid_argument"?"You can look, but only Mo and Pob can edit.":"Couldn't save. Check your connection."); }
-  delete pend[id];
+
+/* ---------- moving vehicles on the map (cut from the painted map, coords in pano.webp pixels) ---------- */
+const VK=4224/1584, VA={"s1":{"x":984,"y":793,"w":100,"h":74,"kind":"red","pad":14},"s2":{"x":1453,"y":893,"w":99,"h":73,"kind":"red","pad":14},"t1":{"x":1696,"y":915,"w":46,"h":66,"kind":"tuk","pad":14},"t2":{"x":1760,"y":920,"w":51,"h":65,"kind":"tuk","pad":14},"b1":{"x":3010,"y":606,"w":56,"h":78,"kind":"boat","pad":14},"b2":{"x":3030,"y":744,"w":77,"h":70,"kind":"boat","pad":14},"b3":{"x":2774,"y":985,"w":53,"h":77,"kind":"boat","pad":14},"b4":{"x":2834,"y":1123,"w":45,"h":79,"kind":"boat","pad":14},"plane":{"x":581,"y":172,"w":152,"h":136,"kind":"plane","pad":14},"riverfg":{"x":2700,"y":480,"w":440,"h":820}};
+const vEl=(k,sh)=>{ const a=VA[k], p=sh?a.pad:0; return `<img class="vh" data-vk="${k}${sh?"-sh":""}" src="veh/${k}${sh?"-sh":""}.webp" alt="" style="width:${((a.w+2*p)/VK).toFixed(2)}px;height:${((a.h+2*p)/VK).toFixed(2)}px">`; };
+function vehHTML(){
+  const rf=VA.riverfg;
+  return ["t1","t2","s1","s2","b1","b2","b3","b4"].map(k=>vEl(k,1)).join("")+["t1","t2","s1","s2","b1","b2","b3","b4"].map(k=>vEl(k,0)).join("")
+    +`<img class="vh rfg" src="veh/river-fg.webp" alt="" style="width:${(rf.w/VK).toFixed(2)}px;height:${(rf.h/VK).toFixed(2)}px;transform:translate(${(rf.x/VK).toFixed(2)}px,${(rf.y/VK).toFixed(2)}px);opacity:1">`
+    +vEl("plane",1)+vEl("plane",0);
 }
-(async()=>{
-  try{
-    if(!window.claude||!window.claude.use) return;
-    const db=await window.claude.use("db"); if(!db) return;
-    col=db.collection("trip");
-    col.onSnapshot(s=>{ const n={}; s.docs.forEach(d=>{const v=d.data();n[d.id]={done:!!v.done,note:typeof v.note==="string"?v.note:[v.notes?.pob,v.notes?.mo].filter(Boolean).join(" · ")}}); marks=n; saveLocal(); synced=true; refresh(); },()=>{synced=false;refresh()});
-  }catch(e){}
-})();
+/* road: bottom of vehicles follows the kerb line in front of the shops */
+const roadY=(x,off)=>850+0.21*(x-800)-off;
+const ROAD=[{k:"s1",v:36,ph:0,off:30},{k:"s2",v:36,ph:.5,off:30},{k:"t1",v:58,ph:.2,off:46},{k:"t2",v:58,ph:.68,off:46}];
+const RX0=600, RX1=1890;
+/* river centre line, top of the board to the front edge */
+const RIV=[[3018,548],[3045,620],[3054,700],[3040,760],[3004,800],[2984,850],[2935,900],[2880,945],[2846,1000],[2824,1060],[2818,1110],[2826,1160],[2838,1220],[2860,1282]];
+const RL=(()=>{let L=[0];for(let i=1;i<RIV.length;i++)L.push(L[i-1]+Math.hypot(RIV[i][0]-RIV[i-1][0],RIV[i][1]-RIV[i-1][1]));return L})();
+function rivAt(d){ const L=RL[RL.length-1]; d=Math.max(0,Math.min(L,d)); let i=1; while(i<RL.length-1&&RL[i]<d)i++;
+  const a=RIV[i-1],b=RIV[i],u=(d-RL[i-1])/(RL[i]-RL[i-1]||1); const dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1;
+  return {x:a[0]+dx*u,y:a[1]+dy*u,ang:Math.atan2(dy,dx),nx:-dy/l,ny:dx/l}; }
+const BOATS=[{k:"b1",v:15,ph:.05,dir:1,lane:-16,base:69.4},{k:"b2",v:13,ph:.55,dir:1,lane:-14,base:140.7},{k:"b3",v:14,ph:.3,dir:-1,lane:20,base:117.3},{k:"b4",v:12,ph:.8,dir:-1,lane:22,base:90.1}];
+/* runway: centre line through the dashes, plane parks where it was painted */
+const RW={x:726,y:180,dx:-0.65444661,dy:0.75610822,park:91,side:-13.6};
+const ease3=u=>u<=0?0:u>=1?1:u*u*(3-2*u);
+function planeState(T){
+  const c=T%30; let t,alt=0,op=1;
+  if(c<7){ t=RW.park; }
+  else if(c<15){ const u=(c-7)/8; t=RW.park+820*u*u; alt=Math.max(0,t-400)*.42; op=1-ease3((t-640)/260); }
+  else if(c<19){ return null; }
+  else if(c<27){ const u=(c-19)/8; t=-560+(RW.park+560)*(1-(1-u)*(1-u)); alt=Math.max(0,-10-t)*.42; op=ease3((t+560)/180); }
+  else { t=RW.park; }
+  return {t,alt,op};
+}
+let vRAF=0, vWrap=null, vEls={};
+function vehPlace(el,k,x,y,{rot=0,sc=1,op=1}={}){ if(!el) return; const a=VA[k.replace("-sh","")], p=k.endsWith("-sh")?a.pad:0;
+  const w=(a.w+2*p)/VK, h=(a.h+2*p)/VK;
+  el.style.opacity=op.toFixed(3);
+  el.style.transform=`translate3d(${(x/VK-w/2).toFixed(2)}px,${(y/VK-h/2).toFixed(2)}px,0) rotate(${rot.toFixed(4)}rad) scale(${sc.toFixed(3)})`; }
+function vehFrame(now){
+  vRAF=0;
+  const wrap=document.getElementById("pwrap"); if(!wrap){ if(!reduce) setTimeout(vehStart,400); return; }
+  const pr=wrap.parentElement.getBoundingClientRect(); if(!reduce&&(pr.bottom<0||pr.top>innerHeight)){ vRAF=requestAnimationFrame(vehFrame); return; }
+  if(wrap!==vWrap){ vWrap=wrap; vEls={}; wrap.querySelectorAll("[data-vk]").forEach(e=>vEls[e.dataset.vk]=e); }
+  const T=reduce?0:now/1000;
+  for(const r of ROAD){ const a=VA[r.k], L=RX1-RX0;
+    let x,op=1;
+    if(reduce){ x=a.x+a.w/2; } else { const f=((T*r.v/L)+r.ph)%1; x=RX0+f*L; op=Math.min(1,(x-RX0)/70,(RX1-x)/90); }
+    const yb=reduce?a.y+a.h:roadY(x,r.off), y=yb-a.h/2+(reduce?0:Math.sin(T*7+r.ph*9)*.5);
+    vehPlace(vEls[r.k],r.k,x,y,{op}); vehPlace(vEls[r.k+"-sh"],r.k+"-sh",x-5,y+7,{op:op*.9});
+  }
+  const L=RL[RL.length-1];
+  for(const b of BOATS){ const a=VA[b.k];
+    let x,y,rot=0,op=1;
+    if(reduce){ x=a.x+a.w/2; y=a.y+a.h/2; }
+    else { const f=((T*b.v/L)+b.ph)%1, d=b.dir>0?f*L:(1-f)*L, p=rivAt(d);
+      x=p.x+p.nx*b.lane; y=p.y+p.ny*b.lane+Math.sin(T*1.6+b.ph*7)*1.2;
+      let r0=p.ang-b.base*Math.PI/180; r0=Math.atan2(Math.sin(r0),Math.cos(r0)); if(r0>Math.PI/2) r0-=Math.PI; if(r0<-Math.PI/2) r0+=Math.PI; // painted boats have no clear bow, keep them close to their lit angle
+      rot=r0+Math.sin(T*1.1+b.ph*5)*.04;
+      op=Math.min(1,d/50,(L-d)/50); }
+    vehPlace(vEls[b.k],b.k,x,y,{rot,op}); vehPlace(vEls[b.k+"-sh"],b.k+"-sh",x-7,y+5,{rot,op:op*.75});
+  }
+  const ps=reduce?{t:RW.park,alt:0,op:1}:planeState(T), pa=VA.plane;
+  if(!ps){ vehPlace(vEls.plane,"plane",0,0,{op:0}); vehPlace(vEls["plane-sh"],"plane-sh",0,0,{op:0}); }
+  else { const gx=RW.x+RW.dx*ps.t+RW.dy*RW.side*-1, gy=RW.y+RW.dy*ps.t+(-RW.dx)*RW.side*-1;
+    // keep the painted parking spot exact
+    const ox=(pa.x+pa.w/2)-(RW.x+RW.dx*RW.park+RW.dy*RW.side*-1), oy=(pa.y+pa.h/2)-(RW.y+RW.dy*RW.park+(-RW.dx)*RW.side*-1);
+    const sc=1+ps.alt/520;
+    vehPlace(vEls.plane,"plane",gx+ox,gy+oy-ps.alt,{sc,op:ps.op});
+    vehPlace(vEls["plane-sh"],"plane-sh",gx+ox-10,gy+oy+12,{sc:1-Math.min(ps.alt,300)/900,op:ps.op*Math.max(.15,.95-ps.alt/260)*ease3((ps.t+40)/60)*(1-ease3((ps.t-560)/60))});
+  }
+  if(!reduce&&!document.hidden) vRAF=requestAnimationFrame(vehFrame);
+}
+function vehStart(){ if(!vRAF) vRAF=requestAnimationFrame(vehFrame); }
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden) vehStart(); });
+setTimeout(vehStart,300);
+
+
+/* ---------- read-aloud for the คำเมือง cards: phone's Thai voice, pushed high and theatrical ---------- */
+const SPK='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.2L12 5.5v13l-4.8-4H4z" fill="currentColor" stroke="none"/><path class="w1" d="M15.5 9a4 4 0 0 1 0 6"/><path class="w2" d="M18.3 6.5a7.5 7.5 0 0 1 0 11"/></svg>';
+let thVoice=null;
+function pickVoice(){ try{ const vs=speechSynthesis.getVoices().filter(v=>/^th/i.test(v.lang));
+  thVoice=vs.find(v=>/kanya|narisa|premwadee|female|หญิง/i.test(v.name))||vs.find(v=>/google/i.test(v.name))||vs[0]||null; }catch(_){} }
+if("speechSynthesis" in window){ pickVoice(); speechSynthesis.addEventListener?.("voiceschanged",pickVoice); }
+function sayIt(text,btn){
+  const S=window.speechSynthesis;
+  if(!S||!window.SpeechSynthesisUtterance){ toast("This browser can't read aloud"); return; }
+  document.querySelectorAll(".say.talk").forEach(b=>b.classList.remove("talk"));
+  if(!thVoice) pickVoice();
+  const u=new SpeechSynthesisUtterance(text); u.lang="th-TH"; if(thVoice) u.voice=thVoice;
+  u.pitch=1.85; u.rate=.86; u.volume=1;   // high, slow and dramatic: the ตัวแม่ delivery
+  window._utt=u;                         // keep a reference: iOS/Chrome can drop utterances that get garbage-collected
+  let started=false;
+  const done=()=>btn.classList.remove("talk");
+  u.onstart=()=>{ started=true; btn.classList.add("talk"); };
+  u.onend=done; u.onerror=e=>{ done(); if(e&&e.error&&e.error!=="interrupted"&&e.error!=="canceled") toast("Couldn't play the voice ("+e.error+")"); };
+  btn.classList.add("talk");
+  // Safari drops speak() called right after cancel(), so only cancel when something is actually playing
+  if(S.speaking||S.pending){ S.cancel(); setTimeout(()=>S.speak(u),120); } else { S.resume&&S.resume(); S.speak(u); }
+  setTimeout(()=>{ if(!started){ done(); toast(thVoice?"No sound? Turn off silent mode and raise the volume":"No Thai voice on this device"); } },2500);
+  setTimeout(done,8000);
+}
 
 /* ---------- helpers ---------- */
 const $=s=>document.querySelector(s);
@@ -732,7 +814,7 @@ function vHome(){
   const todoHtml = `<div class="sec"><div class="sh"><span class="lab">Your bookings</span><span class="lab">${books.filter(b=>b[5]==="todo").length?books.filter(b=>b[5]==="todo").length+" to confirm":"All set"}</span></div>
     <div class="bk">${books.map(b=>`<div class="bkr"><span class="bkd"><b>${esc(b[1])}</b><span>${esc(b[0])}</span></span><span class="tx"><span class="nm">${esc(b[2])}</span><span class="mt">${esc(b[3])}</span></span>${b[4]&&b[5]!=="ok"?`<button class="copy" data-copy="${b[4]}">${b[4]}</button>`:`<span class="chip ${b[5]==="ok"?"ok":"pend"}">${b[5]==="ok"?"Booked":"To confirm"}</span>`}</div>`).join("")}</div></div>
   <div class="sec"><div class="khead"><h2 class="kt">อู้กำเมือง</h2><span class="ks">พูดเหนือให้เนียน · tap to shout it</span></div>
-    <div class="phr">${phr.map((p,i)=>`<button class="ph" data-phr="${i}"><span class="th${p[0].length>11?" sm":""}">${p[0]}</span><span class="rm">${esc(p[1])}</span><span class="en">${esc(p[2])}</span></button>`).join("")}</div></div>`;
+    <div class="phr">${phr.map((p,i)=>`<div class="ph" role="button" tabindex="0" data-phr="${i}"><span class="th${p[0].length>11?" sm":""}">${p[0]}</span><span class="rm">${esc(p[1])}</span><span class="en">${esc(p[2])}</span><button class="say" data-say="${i}" aria-label="Read ${esc(p[1])} aloud">${SPK}</button></div>`).join("")}</div></div>`;
   window._phr=phr;
   const days=DAYS.map(d=>{const n=d.stops.length, dn=d.stops.filter(s=>marks[s.id]?.done).length;
     return `<button class="dayrow" data-goday="${d.id}"><span class="dd"><b>${d.dn}</b><span>${d.dw}</span></span><span class="tx"><span class="nm">${esc(d.title)}</span><span class="mt">${esc(d.base)}</span></span></button>`}).join("");
@@ -798,7 +880,7 @@ function vMap(){
         <button class="mstep" data-pin="${next||""}" ${next?"":"disabled"} aria-label="Next stop">›</button></div></div>`;
     card=""; }
 
-  return `<div class="pano ${S.zoomed?"zoomed":""}" id="pano" data-panobg="1"><div class="pwrap" id="pwrap"><img src="pano.webp" alt="" width="1584" height="600">${svg}</div>${mcard}</div>${card}`;
+  return `<div class="pano ${S.zoomed?"zoomed":""}" id="pano" data-panobg="1"><div class="pwrap" id="pwrap"><img src="pano.webp" alt="" width="1584" height="600">${vehHTML()}${svg}</div>${mcard}</div>${card}`;
 }
 function vEats(){
   const AREA={watket:"Near K Maison · Wat Ket",bazaar:"Night Bazaar",oldcity:"Old City",nimman:"Nimman",suthep:"Suthep · Wat Umong",chotana:"Chang Phueak",wualai:"Wualai",maerim:"Mae Rim · near Raya",sankamphaeng:"Worth the drive"};
@@ -886,6 +968,7 @@ function render(anim=true){
   if(!anim) app.querySelectorAll(".dayart>img,.heroimg,.count,.next,.st,.it,.ml,.pinpop,.names span,.city,.lede,.city i").forEach(e=>e.style.animation="none");
   document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v));
   if(v==="plan"&&S.pmode==="map") drawRoute(anim);
+  if(reduce) requestAnimationFrame(vehFrame);
   // reveal illustrations (and their clouds / lanterns) only once the picture has loaded
   app.querySelectorAll(".dayart>img,.heroimg").forEach(im=>{ const box=im.closest(".dayart,.herobox"), op=im.closest(".opening");
     const ok=()=>{ box.classList.add("ready"); op&&op.classList.add("ready"); };
@@ -901,9 +984,10 @@ function refresh(){ // data changed elsewhere: re-render without replaying entra
 }
 
 document.addEventListener("click",e=>{
-  const t=e.target.closest("button,[data-pin]");
+  const t=e.target.closest("button,[data-pin],[data-phr]");
   if(!t) return;
   const ds=t.dataset;
+  if(ds.say!==undefined){ const p=(window._phr||[])[+ds.say]; if(p) sayIt(p[0],t); return; }
   if(ds.phr){ const p=(window._phr||[])[+ds.phr]; if(!p) return; const o=document.createElement("div"); o.className="bigphr"; o.innerHTML=`<div><div class="th">${p[0]}</div><div class="rm">${esc(p[1])}</div><div class="en">${esc(p[2])}</div><small>Tap anywhere to close</small></div>`; o.addEventListener("click",()=>o.remove()); document.body.appendChild(o); return; }
   if(ds.pmode){ switchMode(ds.pmode); return; }
   if(ds.onmap){ const k=ds.onmap; S.pmode="map"; S.zoomed=false; cam=null; S.sel=null; saveUi(); render(); scrollTop0(); setTimeout(()=>{ S.sel=k; flyToPin(k) },700); return; }
@@ -911,23 +995,15 @@ document.addEventListener("click",e=>{
   if(ds.tour){ tour(); return; }
   if(ds.v){ if(S.view===ds.v) return; t.classList.remove("hop"); void t.offsetWidth; t.classList.add("hop"); S.zoomed=false; cam=null; S.view=ds.v; S.editing=null; S.sel=null; saveUi(); render(); scrollTop0(); return; }
   if(ds.goday){ S.day=ds.goday; S.view="plan"; S.open=null; saveUi(); render(); scrollTop0(); return; }
-  if(ds.todo){ const id=ds.todo; marks[id]={...(marks[id]||{}),done:!marks[id]?.done}; refresh(); if(marks[id].done){ confetti(document.querySelector(`[data-todo="${id}"]`)); toast("One less thing.") } push(id); return; }
   if(ds.go){ const ti=tripInfo(); if(ti.phase==="during") S.day=DAYS[ti.idx].id; S.view=ds.go; saveUi(); render(); scrollTop0(); return; }
   if(ds.day){ if(S.day===ds.day) return; S.zoomed=false; cam=null; S.day=ds.day; S.open=null; S.editing=null; S.sel=null; saveUi(); dayChange(); return; }
   if(ds.open){ S.open=S.open===ds.open?null:ds.open; S.editing=null; refresh(); return; }
-  if(ds.tick){ const id=ds.tick; marks[id]={...(marks[id]||{}),done:!marks[id]?.done}; refresh(); const el=document.querySelector(`[data-st="${id}"]`); if(el&&marks[id].done){el.classList.add("stamp"); const st=DAYS.flatMap(d=>d.stops).find(x=>x.id===id); confetti(el.querySelector(".dot")); const day=DAYS.find(d=>d.stops.some(x=>x.id===id)); if(day.stops.every(x=>marks[x.id]?.done)){ confetti(el,40); toast(`${day.dw} complete. Legends.`) } else toast(cheer(iconFor(st.p,st.k,st.title))) } push(id); return; }
-  if(ds.note){ const id=ds.note;
-    if(S.editing===id){ const v=($("#ta")?.value||"").trim(); const m=marks[id]||{}; marks[id]={...m,note:v}; S.editing=null; refresh(); push(id); toast(v?"Note saved":"Note removed"); }
-    else { S.editing=id; refresh(); } return; }
-  if(ds.ptick){ const k=ds.ptick, was=isDone(k), id="p-"+k;
-    if(was) DAYS.forEach(d=>d.stops.forEach(s=>{ if(s.p===k&&marks[s.id]?.done){marks[s.id]={...marks[s.id],done:false};push(s.id)} }));
-    marks[id]={...(marks[id]||{}),done:!was}; refresh(); if(!was){ confetti(document.querySelector(`[data-ptick="${k}"]`)); toast(cheer(iconFor(k,"eat"))) } push(id); return; }
   if(ds.pin){ const k=ds.pin; if(S.sel===k){ zoomOut(); return; } S.sel=k; if(t.classList.contains("ml")){ const pn=$("#pano"); if(pn) { const sc=scroller(), base=sc===window?scrollY:sc.scrollTop, off=sc===window?0:sc.getBoundingClientRect().top; sc.scrollTo({top:Math.max(0,pn.getBoundingClientRect().top-off+base-(sc===window?72:60)),behavior:reduce?"auto":"smooth"}) } } flyToPin(k); return; }
   if(ds.replay){ S.zoomed=false; S.sel=null; render(false); drawRoute(true); return; }
   if(ds.eats){ S.eats=ds.eats; render(); return; }
   if(ds.copy){ const v=ds.copy; try{navigator.clipboard.writeText(v).then(()=>toast("Copied"),()=>toast(v))}catch(_){toast(v)} return; }
 });
-document.addEventListener("keydown",e=>{ if((e.key==="Enter"||e.key===" ")&&e.target.matches("[data-pin]")){e.preventDefault();e.target.dispatchEvent(new MouseEvent("click",{bubbles:true}))} });
+document.addEventListener("keydown",e=>{ if((e.key==="Enter"||e.key===" ")&&e.target.matches("[data-pin],.ph[data-phr]")){e.preventDefault();e.target.dispatchEvent(new MouseEvent("click",{bubbles:true}))} });
 /* swipe between days on Plan */
 let sx0=null,sy0=null;
 document.addEventListener("touchstart",e=>{ if(S.view!=="plan"||e.target.closest("textarea,#pano"))return; sx0=e.touches[0].clientX; sy0=e.touches[0].clientY },{passive:true});
@@ -936,4 +1012,5 @@ document.addEventListener("touchend",e=>{ if(sx0==null)return; const dx=e.change
 render();
 </script>
 
+<script>if("serviceWorker" in navigator){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}</script>
 </body></html>
