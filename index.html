@@ -8,13 +8,13 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Mali:wght@500;600&family=Anuphan:wght@400;500&display=swap">
 <style>
 /* Layout: one phone-width column (max 430px), a single view at a time, bottom tab bar. Minimal: white ground, hairlines, palette used sparingly. */
 :root{
   --bg:#E3EAED; --ink:#04252F; --muted:#526770; --line:#CCD7DC; --mist:#D8E1E5;
   --petrol:#0C5070; --sage:#6A9168; --lime:#B5D22F; --on-lime:#04252F; --ring:#B9C4CB;
-  --serif:"Instrument Serif",Georgia,serif; --sans:"Instrument Sans",system-ui,-apple-system,sans-serif; --mono:"DM Mono",ui-monospace,Menlo,monospace;
+  --serif:"Instrument Serif",Georgia,serif; --sans:"Instrument Sans","Anuphan",system-ui,-apple-system,sans-serif; --mono:"DM Mono",ui-monospace,Menlo,monospace; --thai:"Anuphan","Noto Sans Thai",system-ui,sans-serif; --kham:"Mali","Anuphan",system-ui,sans-serif;
 }
 *{box-sizing:border-box}
 html,body{background:var(--bg)}
@@ -27,6 +27,9 @@ a{color:var(--petrol);text-decoration:none}
 .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
 .serif{font-family:var(--serif);font-style:italic;font-weight:400}
 h1{font-size:34px;font-weight:500;letter-spacing:-.02em;line-height:1.1;margin:10px 0 0;text-wrap:balance}
+/* day header: same height whatever the title length, so the date tabs never move */
+h1.dh{height:76px;display:flex;align-items:flex-end}
+h1.dh>span.t2{display:block}
 h1 .serif{color:var(--petrol)}
 .view{animation:viewIn .45s cubic-bezier(.2,.7,.2,1) both}
 @keyframes viewIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
@@ -88,9 +91,11 @@ h1 .serif{color:var(--petrol)}
 .sync i{width:6px;height:6px;border-radius:3px;background:var(--ring)} .sync i.on{background:var(--sage)}
 
 /* day tabs */
-.dayart{position:relative;margin:-28px calc(-1 * max(24px,env(safe-area-inset-right,0px))) 22px calc(-1 * max(24px,env(safe-area-inset-left,0px)));overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent,#000 9%,#000 91%,transparent),linear-gradient(to bottom,transparent,#000 9%,#000 91%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent,#000 9%,#000 91%,transparent),linear-gradient(to bottom,transparent,#000 9%,#000 91%,transparent);mask-composite:intersect}
+.dayart{position:relative;margin:10px calc(-1 * max(24px,env(safe-area-inset-right,0px))) 0 calc(-1 * max(24px,env(safe-area-inset-left,0px)));overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent,#000 9%,#000 91%,transparent),linear-gradient(to bottom,transparent,#000 9%,#000 91%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent,#000 9%,#000 91%,transparent),linear-gradient(to bottom,transparent,#000 9%,#000 91%,transparent);mask-composite:intersect}
 .dayart img{display:block;width:100%;height:auto;animation:fadein .6s ease both}
 .dtabs{display:flex;gap:24px;margin-top:22px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;padding-top:6px}
+/* solid band behind the sticky date tabs: covers the strip above them (status bar area) and the side gutters, so nothing scrolls through */
+.dtabs.stuck::before{content:"";position:absolute;z-index:-1;left:calc(-1 * max(24px,env(safe-area-inset-left,0px)));right:calc(-1 * max(24px,env(safe-area-inset-right,0px)));top:calc(-1 * (env(safe-area-inset-top,0px) + 60px));bottom:-8px;background:var(--bg);box-shadow:0 6px 10px -8px rgba(4,37,47,.18)}
 .dt{min-height:44px;padding-bottom:6px;color:var(--muted);border-bottom:2px solid transparent;transition:color .2s,border-color .3s}
 .dt[aria-selected="true"]{color:var(--ink);font-weight:600;border-color:var(--lime)}
 .dmeta{margin-top:14px;color:var(--muted);font-size:15px}
@@ -132,11 +137,11 @@ textarea{width:100%;margin-top:8px;font:inherit;font-size:15px;border:1px solid 
 @keyframes stamp{0%{transform:scale(.4)}60%{transform:scale(1.7)}100%{transform:scale(1)}}
 
 /* map */
-.pano{margin:22px calc(-1 * max(24px,env(safe-area-inset-right,0px))) 0 calc(-1 * max(24px,env(safe-area-inset-left,0px)));background:transparent;overflow-x:hidden;overflow-y:hidden;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.pano{margin:10px calc(-1 * max(24px,env(safe-area-inset-right,0px))) 0 calc(-1 * max(24px,env(safe-area-inset-left,0px)));background:transparent;overflow-x:hidden;overflow-y:hidden;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .pano::-webkit-scrollbar{display:none}
 .pano{background:transparent;border-radius:0;}
-.pano{position:relative;height:calc((100vw - 0px) * 600 / 1584 + 28px);max-height:191px;overflow:hidden;touch-action:pan-y;transition:height .6s cubic-bezier(.45,.05,.25,1),max-height .6s cubic-bezier(.45,.05,.25,1)}
-@media (min-width:430px){.pano{height:191px}}
+.pano{position:relative;height:calc((100vw - 0px) * 600 / 1584 + 48px);max-height:211px;overflow:hidden;touch-action:pan-y;transition:height .6s cubic-bezier(.45,.05,.25,1),max-height .6s cubic-bezier(.45,.05,.25,1)}
+@media (min-width:430px){.pano{height:211px}}
 .pano.zoomed{height:min(calc(100vh - 200px),540px);max-height:540px;cursor:grab;touch-action:none}
 .pano.zoomed.dragging{cursor:grabbing}
 .pano.zoomed .mcard{touch-action:auto}
@@ -287,7 +292,7 @@ textarea{width:100%;margin-top:8px;font:inherit;font-size:15px;border:1px solid 
   .screen{display:block;position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;border-radius:62px;padding-top:54px;scrollbar-width:none}
   .screen::-webkit-scrollbar{display:none}
   .island{display:block;position:absolute;top:11px;left:50%;transform:translateX(-50%);width:124px;height:36px;border-radius:20px;background:#000;z-index:50}
-  .sbar{display:flex;position:absolute;top:0;left:0;right:0;height:54px;z-index:45;align-items:center;justify-content:space-between;padding:4px 34px 0 46px;font:600 16px/1 -apple-system,"SF Pro Text",system-ui,sans-serif;color:#04252F;background:linear-gradient(var(--bg) 70%,rgba(227,234,237,0))}
+  .sbar{display:flex;position:absolute;top:0;left:0;right:0;height:54px;z-index:45;align-items:center;justify-content:space-between;padding:4px 34px 0 46px;font:600 16px/1 -apple-system,"SF Pro Text",system-ui,sans-serif;color:#04252F;background:var(--bg)}
   .sbi{display:flex;align-items:center;gap:6px} .sbi svg{fill:#04252F}
   .batt{width:25px;height:12px;border:1.5px solid rgba(4,37,47,.45);border-radius:4px;padding:1.5px;position:relative} .batt i{display:block;height:100%;width:78%;background:#04252F;border-radius:1.5px}
   .batt::after{content:"";position:absolute;right:-4px;top:3px;width:2px;height:4px;border-radius:0 1px 1px 0;background:rgba(4,37,47,.45)}
@@ -320,6 +325,32 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:none}
 .pmode button[aria-selected="true"]{color:var(--ink)}
 .pmode i{position:absolute;z-index:0;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:10px;background:#fff;box-shadow:0 2px 8px rgba(4,37,47,.10);transition:transform .35s cubic-bezier(.3,1.3,.5,1)}
 .pmode i.r{transform:translateX(100%)}
+.dayart{cursor:pointer}
+.dayart canvas.fw{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}
+
+.bk{margin-top:8px}
+.bkr{display:flex;align-items:center;gap:12px;min-height:58px;border-top:1px solid var(--line)}
+.bkr:last-child{border-bottom:1px solid var(--line)}
+.bkd{width:46px;flex:none;display:flex;flex-direction:column;line-height:1.15} .bkd b{font-family:var(--mono);font-size:13px;font-weight:500} .bkd span{font-size:11px;color:var(--muted)}
+.bkr .tx{flex:1;min-width:0;display:flex;flex-direction:column} .bkr .nm{font-weight:500} .bkr .mt{font-size:13px;color:var(--muted)}
+.chip{flex:none;white-space:nowrap;font-size:12px;font-weight:600;padding:4px 10px;border-radius:12px}
+.chip.ok{background:#E3EDD8;color:#4E7A4C} .chip.pend{background:#F6ECD3;color:#8A6A1E}
+.khead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-bottom:6px}
+.kt{font-family:var(--kham);font-weight:600;font-size:30px;line-height:1.1;margin:0;color:var(--petrol)}
+.ks{font-family:var(--thai);font-size:13px;color:var(--muted)}
+.phr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.ph{display:flex;flex-direction:column;align-items:flex-start;text-align:left;padding:14px 14px 13px;border-radius:18px;background:#fff;border:0;box-shadow:0 1px 0 rgba(4,37,47,.05);transition:transform .15s}
+.ph .th{font-family:var(--kham);font-weight:500;font-size:22px;line-height:1.25;color:var(--ink)}
+.ph .rm{font-family:var(--thai);font-size:13px;color:var(--petrol);margin-top:3px}
+.ph .en{font-family:var(--serif);font-style:italic;font-size:15px;line-height:1.3;color:var(--muted);margin-top:8px}
+.ph:active{transform:scale(.97)}
+.ph .th.sm{font-size:min(18px,4.5vw);line-height:1.5;white-space:nowrap}
+.bigphr{position:fixed;inset:0;z-index:60;background:rgba(4,37,47,.55);display:flex;align-items:center;justify-content:center;padding:24px;animation:fadein .2s ease both}
+.bigphr div{background:#fff;border-radius:24px;padding:36px 24px;text-align:center;max-width:360px;width:100%;animation:sheet .3s cubic-bezier(.2,.8,.2,1) both}
+.bigphr .th{font-family:var(--kham);font-size:50px;font-weight:600;color:#04252F;line-height:1.25}
+.bigphr .rm{font-family:var(--thai);font-size:20px;color:var(--petrol);margin-top:12px}
+.bigphr .en{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--muted);margin-top:6px}
+.bigphr small{display:block;margin-top:22px;font-size:12px;color:var(--muted)}
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 
@@ -336,6 +367,7 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:none}
 
 <script>
 const P = {
+  natwat:{n:"Natwat Home Cafe",a:"watket",c:"Breakfast café",h:"07:00–16:00 · closed Mon",q:"Natwat Home Cafe Charoenrat Road Chiang Mai"},
   kmaison:{n:"K Maison Lanna Boutique Hotel",a:"watket",c:"Hotel",h:"Check-in 14:00 · out 12:00",q:"K Maison Lanna Boutique Hotel Chiang Mai"},
   raya:{n:"Raya Heritage",a:"maerim",c:"Hotel",h:"Check-in 14:00 · out 12:00",q:"Raya Heritage Chiang Mai"},
   cnx:{n:"Chiang Mai Airport (CNX)",a:"airport",c:"Airport",q:"Chiang Mai International Airport"},
@@ -379,46 +411,47 @@ const mapsUrl = k => "https://www.google.com/maps/search/?api=1&query=" + encode
 
 /* ---------- the plan ---------- */
 const DAYS = [
- {id:"d1",dw:"Thu",dn:"22",title:"Land early, go west",sub:"Straight from the airport to the west side with your bags, back at the hotel by 13:15 for Mo's 14:00 presentation, then dinner.",base:"Sleep: K Maison",stops:[
+ {id:"d1",dw:"Thu",dn:"22",title:"Land early, go west",sub:"Bags at the hotel first, breakfast by the river, then the west side bag-free. Back by 13:15 for Mo's 14:00 presentation.",base:"Sleep: K Maison",stops:[
   {id:"d1-fly",t:"06:00",k:"fly",title:"FD 3416 · DMK → CNX",d:"Don Mueang Terminal 2. Lands 07:10.",p:"cnx"},
-  {id:"d1-bf",t:"08:00",k:"eat",title:"Khao Ngai Breakfast & Brunch",d:"Grab straight from the airport with your bags, about 20 min. Opens 08:00.",p:"khaongai"},
-  {id:"d1-bkw",t:"10:00",k:"see",title:"Baan Kang Wat + GRAPH Coffee",d:"Artist village with shops and workshops. Coffee at GRAPH inside. Opens 10:00.",p:"bkw",also:["graph"]},
-  {id:"d1-lunch",t:"11:30",k:"eat",title:"Han Teung Chiangmai",d:"Early lunch, a few minutes from Baan Kang Wat. Order the ant-egg omelette. Leave by 12:45.",p:"hanteung"},
-  {id:"d1-in",t:"12:45",k:"stay",title:"Grab to K Maison · arrive by 13:15",d:"About 20–25 min across town. Mo presents at 14:00. Standard check-in is 14:00, so ask for early check-in.",p:"kmaison"},
+  {id:"d1-drop",t:"07:30",k:"stay",title:"Drop bags at K Maison",d:"Grab from the airport, about 20 min (add 15–20 min if you check a bag). Leave your bags with reception until check-in.",p:"kmaison"},
+  {id:"d1-bf",t:"08:15",k:"eat",title:"Natwat Home Cafe",d:"Breakfast café on Charoenrat Rd by the river, about 5 min walk from the hotel. Opens 07:00. Leave by 09:20.",p:"natwat"},
+  {id:"d1-bkw",t:"10:00",k:"see",title:"Baan Kang Wat + GRAPH Coffee",d:"Grab west across town, 25–30 min in morning traffic, no bags. Artist village with shops and workshops. Coffee at GRAPH inside. Opens 10:00.",p:"bkw",also:["graph"]},
+  {id:"d1-lunch",t:"11:30",k:"eat",title:"Han Teung Chiangmai",d:"Early lunch, a few minutes from Baan Kang Wat. Order the ant-egg omelette. Leave by 12:35, no later.",p:"hanteung"},
+  {id:"d1-in",t:"12:35",k:"stay",title:"Grab back to K Maison · arrive by 13:15",d:"25–35 min across town at midday, so this leaves a buffer for 13:15. Mo presents at 14:00. Ask for early check-in.",p:"kmaison"},
   {id:"d1-talk",t:"14:00",k:"stay",title:"Mo's presentation · Pob's rest time",d:"Rest or a short walk by the river. Regroup before dinner.",p:"kmaison"},
-  {id:"d1-dinner",t:"18:00",k:"eat",title:"Rasik Local Kitchen",d:"Small room near the Night Bazaar. Book a table.",p:"rasik",alt:"mare"},
-  {id:"d1-drinks",t:"20:00",k:"drink",title:"Tha Chang Cafe",d:"Retro bar with light shows, near the hotel.",p:"thachang"},
+  {id:"d1-dinner",t:"18:00",k:"eat",title:"Rasik Local Kitchen",d:"Small room near the Night Bazaar, 10–15 min by Grab from the hotel. Leave 17:45. Book a table.",p:"rasik",alt:"mare"},
+  {id:"d1-drinks",t:"20:00",k:"drink",title:"Tha Chang Cafe",d:"Retro bar with light shows. Grab about 10 min from Rasik, back toward the hotel.",p:"thachang"},
  ]},
  {id:"d2",dw:"Fri",dn:"23",title:"Khao soi, temples, sunset",sub:"Old City in the morning, a slow afternoon, a sunset run at Ang Kaew, then dinner and wine.",base:"Sleep: K Maison",stops:[
-  {id:"d2-ks",t:"09:30",k:"eat",title:"Khao Soi Lung Prakit Kad Kom",d:"Michelin-listed khao soi. Opens 09:30.",p:"lungprakit"},
-  {id:"d2-temples",t:"10:30",k:"see",title:"Wat Chedi Luang → Wat Phra Singh",d:"Cover shoulders and knees. About 10 min walk between them.",p:"chedi",also:["singh"]},
-  {id:"d2-london",t:"11:45",k:"eat",title:"LONDON.cnx",d:"Quick pastry stop on Arak Rd. Grab a salt bread to go, and save room for lunch.",p:"london"},
-  {id:"d2-kusa",t:"12:30",k:"eat",title:"KUSA Japanese · booked 12:30",d:"Japanese home cooking in a two-storey house opposite Wat Ket. Grab from the Old City about 10–15 min, leave LONDON.cnx by 12:10.",p:"kusa"},
-  {id:"d2-rest",t:"14:00",k:"stay",title:"Hotel break",d:"Walk back from KUSA. Rest through the hottest hours.",p:"kmaison"},
-  {id:"d2-tea",t:"15:00",k:"eat",title:"Magokoro Teahouse",d:"Matcha on Sridonchai Rd, close to the hotel.",p:"magokoro"},
-  {id:"d2-ang",t:"17:00",k:"see",title:"Sunset run at Ang Kaew",d:"Run the loop around the reservoir at CMU as the light goes. Grab from the hotel about 20 min, leave around 16:35. Bring water.",p:"angkaew"},
-  {id:"d2-shower",t:"17:50",k:"stay",title:"Back to K Maison · shower",d:"Grab about 20 min. Change for dinner.",p:"kmaison"},
-  {id:"d2-dinner",t:"19:30",k:"eat",title:"CHAWEE",d:"Monthly menu, ends with a samrap spread. Book a table.",p:"chawee"},
-  {id:"d2-wine",t:"21:15",k:"drink",title:"Ivy's Wonder Wine Bar",d:"Nimman. WHY ME nimman is close if you want a second stop.",p:"ivys",alt:"whyme"},
+  {id:"d2-ks",t:"09:30",k:"eat",title:"Khao Soi Lung Prakit Kad Kom",d:"Michelin-listed khao soi south of the Old City, 15 min by Grab from the hotel. Leave 09:15. Opens 09:30.",p:"lungprakit"},
+  {id:"d2-temples",t:"10:30",k:"see",title:"Wat Chedi Luang → Wat Phra Singh",d:"Grab about 10 min from the khao soi shop. Cover shoulders and knees. About 10 min walk between the two temples.",p:"chedi",also:["singh"]},
+  {id:"d2-london",t:"11:45",k:"eat",title:"LONDON.cnx",d:"Bakery on Arak Rd, about 10 min walk from Wat Phra Singh. Grab a salt bread to go and save room for lunch.",p:"london"},
+  {id:"d2-kusa",t:"12:30",k:"eat",title:"KUSA Japanese · booked 12:30",d:"Japanese home cooking opposite Wat Ket. Grab from the Old City 10–15 min, so leave LONDON.cnx by 12:10.",p:"kusa"},
+  {id:"d2-rest",t:"14:00",k:"stay",title:"Hotel break",d:"About 5 min walk back from KUSA. Rest through the hottest hours.",p:"kmaison"},
+  {id:"d2-tea",t:"15:00",k:"eat",title:"Magokoro Teahouse",d:"Matcha on Sridonchai Rd, 10–15 min by Grab from the hotel. Leave 14:45.",p:"magokoro"},
+  {id:"d2-ang",t:"17:00",k:"see",title:"Sunset run at Ang Kaew",d:"Grab from Magokoro to CMU, 25–30 min in evening traffic, so leave by 16:30. Run the reservoir loop before sunset (about 17:50). Bring water.",p:"angkaew"},
+  {id:"d2-shower",t:"17:50",k:"stay",title:"Back to K Maison · shower",d:"Grab back 25–35 min in rush hour. Shower and change. Leave for dinner by 19:05.",p:"kmaison"},
+  {id:"d2-dinner",t:"19:30",k:"eat",title:"CHAWEE",d:"Chang Phueak, 15–20 min by Grab from the hotel. Monthly menu, ends with a samrap spread. Book a table.",p:"chawee"},
+  {id:"d2-wine",t:"21:15",k:"drink",title:"Ivy's Wonder Wine Bar",d:"Nimman, 10–15 min by Grab from CHAWEE. WHY ME nimman is close if you want a second stop.",p:"ivys",alt:"whyme"},
  ]},
  {id:"d3",dw:"Sat",dn:"24",title:"Move north to Mae Rim",sub:"Khao soi round two, lunch in a Lanna house, pool, then the Saturday market.",base:"Sleep: Raya Heritage",stops:[
-  {id:"d3-ks",t:"09:30",k:"eat",title:"Khao Soi Mae Manee",d:"Chotana Soi 24. Open 09:00–15:00.",p:"maemanee"},
-  {id:"d3-out",t:"11:30",k:"stay",title:"Pack · check out of K Maison",d:"Check-out by 12:00.",p:"kmaison"},
-  {id:"d3-lunch",t:"12:30",k:"eat",title:"Gongkham Maerim",d:"Grab north, about 30 min. Michelin Bib Gourmand, Northern Thai.",p:"gongkham"},
-  {id:"d3-in",t:"14:00",k:"stay",title:"Check in at Raya Heritage",d:"Pool, spa, and the rest of the afternoon here.",p:"raya"},
-  {id:"d3-grab",t:"17:15",k:"move",title:"Grab to Wualai",d:"About 35 min from Mae Rim.",p:"wualai"},
-  {id:"d3-market",t:"17:45",k:"see",title:"Wualai Saturday Walking Street",d:"Silverwork street. Eat your way through dinner here.",p:"wualai"},
-  {id:"d3-ramen",t:"20:00",k:"eat",title:"Sanmai Ramen (optional)",d:"About 10 min away, open until 21:30.",p:"sanmai"},
-  {id:"d3-back",t:"21:00",k:"stay",title:"Grab back to Raya",d:"About 30–35 min.",p:"raya"},
+  {id:"d3-ks",t:"09:30",k:"eat",title:"Khao Soi Mae Manee",d:"Chotana Soi 24, 15–20 min by Grab from the hotel. Leave 09:10. Open 09:00–15:00.",p:"maemanee"},
+  {id:"d3-out",t:"11:00",k:"stay",title:"Pack · check out of K Maison",d:"Grab back by about 10:40, then pack. Check-out by 12:00.",p:"kmaison"},
+  {id:"d3-lunch",t:"12:30",k:"eat",title:"Gongkham Maerim",d:"Grab north with your bags, 30–40 min, so leave K Maison by 11:50. Michelin Bib Gourmand, Northern Thai.",p:"gongkham"},
+  {id:"d3-in",t:"14:00",k:"stay",title:"Check in at Raya Heritage",d:"About 10 min from Gongkham. Pool, spa, and the rest of the afternoon here.",p:"raya"},
+  {id:"d3-grab",t:"17:05",k:"move",title:"Grab to Wualai",d:"Raya to Wualai is 35–45 min on a Saturday evening. Leave by 17:05.",p:"wualai"},
+  {id:"d3-market",t:"17:45",k:"see",title:"Wualai Saturday Walking Street",d:"Silverwork street, busiest after dark. Eat your way through dinner here.",p:"wualai"},
+  {id:"d3-ramen",t:"20:00",k:"eat",title:"Sanmai Ramen (optional)",d:"About 10 min by Grab from Wualai. Open until 21:30.",p:"sanmai"},
+  {id:"d3-back",t:"21:00",k:"stay",title:"Grab back to Raya",d:"About 35–40 min back to Mae Rim.",p:"raya"},
  ]},
  {id:"d4",dw:"Sun",dn:"25",title:"Slow morning, Nimman, home",sub:"Use Raya until noon, eat in town, back for the 18:30 transfer.",base:"Fly home 20:30",stops:[
   {id:"d4-raya",t:"08:00",k:"stay",title:"Breakfast and pool at Raya",d:"Stay on property until check-out.",p:"raya"},
   {id:"d4-out",t:"12:00",k:"stay",title:"Check out · leave bags at Raya",d:"Ask the front desk to hold luggage until the transfer.",p:"raya"},
-  {id:"d4-lunch",t:"12:45",k:"eat",title:"Sushi Umai Nimman",d:"Grab into Nimman, about 20 min.",p:"sushiumai"},
-  {id:"d4-free",t:"14:15",k:"eat",title:"Cheva & Chavee + Nimman wander",d:"Dessert in Nimman Soi 7, then cafés and shops.",p:"cheva"},
-  {id:"d4-pizza",t:"16:00",k:"eat",title:"Adirak Pizza",d:"Sourdough pizza, opens 14:00. Early dinner before the flight.",p:"adirak"},
-  {id:"d4-back",t:"17:45",k:"move",title:"Grab back to Raya",d:"About 25 min. Collect bags.",p:"raya"},
-  {id:"d4-xfer",t:"18:30",k:"move",title:"Raya airport transfer",d:"About 35 min to CNX. Confirm the pickup time with the hotel.",p:"cnx"},
+  {id:"d4-lunch",t:"12:45",k:"eat",title:"Sushi Umai Nimman",d:"Grab into Nimman, 25–30 min. Leave Raya by 12:15.",p:"sushiumai"},
+  {id:"d4-free",t:"14:15",k:"eat",title:"Cheva & Chavee + Nimman wander",d:"Short walk within Nimman. Dessert in Soi 7, then cafés and shops.",p:"cheva"},
+  {id:"d4-pizza",t:"16:00",k:"eat",title:"Adirak Pizza",d:"About 10 min by Grab from Nimman. Sourdough pizza, opens 14:00. Early dinner before the flight.",p:"adirak"},
+  {id:"d4-back",t:"17:30",k:"move",title:"Grab back to Raya",d:"Grab back to Mae Rim, 35–40 min on a Sunday evening. Leave by 17:30 to make the 18:30 pickup. Collect bags.",p:"raya"},
+  {id:"d4-xfer",t:"18:30",k:"move",title:"Raya airport transfer",d:"35–40 min to CNX, arriving around 19:10, about 80 min before the 20:30 flight. Confirm the pickup with the hotel.",p:"cnx"},
   {id:"d4-fly",t:"20:30",k:"fly",title:"Thai AirAsia · CNX → DMK",d:"Lands Don Mueang 21:45.",p:"cnx"},
  ]},
 ];
@@ -428,7 +461,7 @@ DAYS.forEach(d=>d.stops.forEach(s=>{[s.p,...(s.also||[])].forEach(k=>{if(P[k]&&P
 
 
 /* pin positions on the illustrated panorama (pano.webp, 1584 × 600 px) */
-const XY={"cnx":[245,98],"khaongai":[400,42],"bkw":[520,75],"graph":[575,90],"hanteung":[625,118],"lelephant":[655,150],"angkaew":[440,125],"adirak":[300,200],"cheva":[370,245],"ivys":[425,222],"whyme":[465,250],"sushiumai":[520,278],"maemanee":[395,300],"chawee":[455,310],"mamafah":[560,325],"chedi":[745,212],"singh":[905,230],"london":[835,255],"lucky":[700,250],"wualai":[800,362],"lungprakit":[715,355],"thachang":[1140,370],"mare":[1195,405],"kusa":[1215,235],"kmaison":[1285,218],"magokoro":[1225,285],"rasik":[1265,325],"sanmai":[1300,365],"raya":[1425,280],"gongkham":[1350,425]};
+const XY={"cnx":[245,98],"khaongai":[400,42],"bkw":[520,75],"graph":[575,90],"hanteung":[625,118],"lelephant":[655,150],"angkaew":[440,125],"adirak":[300,200],"cheva":[370,245],"ivys":[425,222],"whyme":[465,250],"sushiumai":[520,278],"maemanee":[395,300],"chawee":[455,310],"mamafah":[560,325],"chedi":[745,212],"singh":[905,230],"london":[835,255],"lucky":[700,250],"wualai":[800,362],"lungprakit":[715,355],"thachang":[1140,370],"mare":[1195,405],"kusa":[1215,235],"kmaison":[1285,218],"natwat":[1248,250],"magokoro":[1225,285],"rasik":[1265,325],"sanmai":[1300,365],"raya":[1425,280],"gongkham":[1350,425]};
 
 const DAYBG={"d1": "#B8CBD1", "d2": "#E6EEF0", "d3": "#E6EBEF", "d4": "#D8E1E6"};
 
@@ -586,6 +619,93 @@ const scrollTop0=()=>scroller().scrollTo({top:0});
 function fitDevice(){ const d=document.getElementById("device"); if(!d) return; const z=Math.min(1,(innerHeight-60)/880); d.style.setProperty("--dz",inDevice()?z:1); }
 addEventListener("resize",fitDevice); fitDevice();
 (function clock(){ const el=document.getElementById("sbt"); if(el){ const n=new Date(Date.now()+7*3600e3); el.textContent=n.getUTCHours()+":"+String(n.getUTCMinutes()).padStart(2,"0"); } setTimeout(clock,30000); })();
+
+/* tap the day illustration: a small firework rises from where you tapped and bursts */
+const FW=["#B5D22F","#FFD27A","#FF9F6E","#FFFFFF","#7CC3E0","#F6B35A"];
+const FWS={}; let fwLast=0;
+function fwSprite(c){ if(FWS[c]) return FWS[c]; const n=document.createElement("canvas"); n.width=n.height=32; const g=n.getContext("2d");
+  const gr=g.createRadialGradient(16,16,0,16,16,16); gr.addColorStop(0,"#FFFFFF"); gr.addColorStop(.25,c); gr.addColorStop(1,"rgba(0,0,0,0)"); g.fillStyle=gr; g.fillRect(0,0,32,32); return FWS[c]=n; }
+function firework(box,x,y){
+  if(reduce) return;
+  const tnow=performance.now(); if(tnow-fwLast<90) return; fwLast=tnow;
+  let cv=box.querySelector("canvas.fw");
+  if(!cv){ cv=document.createElement("canvas"); cv.className="fw"; box.appendChild(cv); }
+  const dpr=Math.min(devicePixelRatio||1,3), W=box.clientWidth, H=box.clientHeight;
+  if(cv.width!==Math.round(W*dpr)){ cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr); }
+  const g=cv.getContext("2d"); g.setTransform(dpr,0,0,dpr,0,0);
+  const st=box._fw||(box._fw={parts:[],rockets:[],run:false});
+  const peak=Math.max(30,y-90-Math.random()*40), col=FW[Math.floor(Math.random()*FW.length)], col2=FW[Math.floor(Math.random()*FW.length)];
+  if(st.rockets.length>=5) return; st.rockets.push({x,y,ty:peak,vx:(Math.random()-.5)*.6,col,col2});
+  if(st.run) return; st.run=true;
+  let last=performance.now();
+  const tick=now=>{
+    const dt=Math.min(40,now-last)/16.7; last=now;
+    g.clearRect(0,0,W,H);
+    for(let i=st.rockets.length-1;i>=0;i--){ const r=st.rockets[i]; r.y-=5*dt; r.x+=r.vx*dt;
+      g.fillStyle="rgba(255,230,170,.9)"; g.beginPath(); g.arc(r.x,r.y,1.8,0,6.283); g.fill();
+      g.fillStyle="rgba(255,210,122,.35)"; g.beginPath(); g.arc(r.x,r.y+5,1.2,0,6.283); g.fill();
+      if(r.y<=r.ty){ st.rockets.splice(i,1); const n=st.parts.length>220?18:st.parts.length>120?28:42;
+        for(let k=0;k<n;k++){ const a=k/n*6.283+Math.random()*.2, sp=2.4+Math.random()*2.4;
+          st.parts.push({x:r.x,y:r.y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:1,c:k%3?r.col:r.col2,s:2+Math.random()*1.4,px:r.x,py:r.y}); }
+        st.parts.push({x:r.x,y:r.y,vx:0,vy:0,life:1,c:"#FFFFFF",s:9,flash:1}); } }
+    for(let i=st.parts.length-1;i>=0;i--){ const p=st.parts[i];
+      if(p.flash){ p.life-=.12*dt; if(p.life<=0){st.parts.splice(i,1);continue}
+        g.globalAlpha=.8*p.life; g.drawImage(fwSprite("#FFF6DC"),p.x-24,p.y-24,48,48); g.globalAlpha=1; continue; }
+      p.px=p.x; p.py=p.y; p.vx*=.962; p.vy=p.vy*.962+.04*dt; p.x+=p.vx*dt; p.y+=p.vy*dt; p.life-=.013*dt;
+      if(p.life<=0){ st.parts.splice(i,1); continue; }
+      g.globalAlpha=Math.max(0,p.life); g.strokeStyle=p.c; g.lineWidth=p.s*.7; g.lineCap="round"; g.beginPath(); g.moveTo(p.px-(p.x-p.px)*2,p.py-(p.y-p.py)*2); g.lineTo(p.x,p.y); g.stroke(); const z=p.s*4*(.6+.4*p.life); g.drawImage(fwSprite(p.c),p.x-z/2,p.y-z/2,z,z); g.globalAlpha=1; }
+    if(st.parts.length>320) st.parts.splice(0,st.parts.length-320);
+    if(st.parts.length||st.rockets.length) requestAnimationFrame(tick); else { g.clearRect(0,0,W,H); st.run=false; }
+  };
+  requestAnimationFrame(tick);
+}
+document.addEventListener("click",e=>{ const box=e.target.closest(".dayart"); if(!box) return; const r=box.getBoundingClientRect(); firework(box,e.clientX-r.left,e.clientY-r.top); });
+/* mark the date tabs as "stuck" while pinned to the top, so the solid band behind them only shows then */
+function checkStuck(){ const t=document.querySelector(".dtabs"); if(!t) return; const sc=scroller(), top=sc===window?0:sc.getBoundingClientRect().top+54;
+  const pinned=t.getBoundingClientRect().top<=top+parseFloat(getComputedStyle(t).top||0)+1 && (sc===window?scrollY:sc.scrollTop)>20; t.classList.toggle("stuck",pinned); }
+addEventListener("scroll",checkStuck,{passive:true}); document.getElementById("screen")?.addEventListener("scroll",checkStuck,{passive:true});
+/* switching day: keep the header and date tabs still, only refresh what's below them */
+function dayChange(){
+  const sc=scroller(), keep=sc===window?scrollY:sc.scrollTop;
+  render(true);
+  const sec=$("#app section"); if(sec) sec.style.animation="none";
+  sc.scrollTo({top:keep});
+  const below=[...document.querySelectorAll("#pvis,.dmeta,.hint")];
+  below.forEach(e=>{ e.style.opacity="0"; e.style.transform="translateY(6px)"; });
+  requestAnimationFrame(()=>requestAnimationFrame(()=>below.forEach(e=>{ e.style.transition="opacity .35s ease, transform .35s ease"; e.style.opacity="1"; e.style.transform="none"; })));
+  setTimeout(()=>below.forEach(e=>{ e.style.transition=""; e.style.transform=""; }),400);
+}
+/* ---------- smooth List <-> Map switch ---------- */
+let swapping=false;
+const nextFrame=()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+async function switchMode(m){
+  if(S.pmode===m||swapping) return;
+  const app=$("#app"), from=S.pmode;
+  const done=()=>{ S.pmode=m; S.zoomed=false; cam=null; S.sel=null; S.open=null; saveUi(); };
+  app.querySelector(".pmode i")?.classList.toggle("r",m==="map");
+  app.querySelectorAll(".pmode button").forEach(b=>b.setAttribute("aria-selected",b.dataset.pmode===m));
+  if(reduce){ done(); render(false); return; }
+  swapping=true; flyTok++;
+  const sc=scroller(), keep=sc===window?scrollY:sc.scrollTop;
+  let box=$("#pvis"); const H0=box?box.offsetHeight:0, vis=box?.firstElementChild;
+  const body=app.querySelectorAll(from==="list"?".dmeta,.tl":".hint,.card");
+  body.forEach(e=>{ e.style.transition="opacity .2s ease"; e.style.opacity="0"; });
+  if(vis){ vis.style.transition="opacity .24s ease, transform .3s ease"; vis.style.opacity="0"; vis.style.transform="scale(.97)"; }
+  await sleep(240);
+  done(); render(false); sc.scrollTo({top:keep});
+  box=$("#pvis"); const nv=box?.firstElementChild;
+  const after=app.querySelectorAll(m==="list"?".dmeta,.tl":".hint,.card");
+  after.forEach(e=>{ e.style.opacity="0"; });
+  if(box&&nv){ const H1=box.offsetHeight; box.style.height=H0+"px"; box.style.overflow="hidden";
+    nv.style.opacity="0"; nv.style.transform="scale(.97)";
+    await nextFrame();
+    box.style.transition="height .42s cubic-bezier(.4,0,.2,1)"; box.style.height=H1+"px";
+    nv.style.transition="opacity .4s ease .08s, transform .5s cubic-bezier(.2,.8,.2,1) .05s"; nv.style.opacity="1"; nv.style.transform="none"; }
+  after.forEach(e=>{ e.style.transition="opacity .35s ease .18s"; e.style.opacity="1"; });
+  if(m==="map") setTimeout(()=>drawRoute(true),180);
+  setTimeout(()=>{ if(box){ box.style.height=""; box.style.overflow=""; box.style.transition=""; }
+    if(nv){ nv.style.transition=""; nv.style.transform=""; } after.forEach(e=>e.style.transition=""); swapping=false; },560);
+}
 /* ---------- views ---------- */
 function vHome(){
   const ti=tripInfo();
@@ -597,10 +717,23 @@ function vHome(){
   else { nd=DAYS[0]; ns=DAYS[0].stops[0]; }
   const next = ns ? `<button class="next" data-goday="${nd.id}"><img class="ico" src="ic/${iconFor(ns.p,ns.k,ns.title)}.webp" alt="" width="80" height="80">
       <span class="tx"><span class="lab">Up next · ${nd.dw} ${ns.t}</span><b>${esc(ns.title)}</b><span class="sub">${esc(ns.d)}</span></span><span class="chev" aria-hidden="true">›</span></button>` : "";
-  const todo=[["todo-rasik","Book Rasik Local Kitchen","Thu 18:00","083-269-6632"],["todo-chawee","Book CHAWEE","Fri 19:30","084-324-9363"],["todo-gongkham","Call Gongkham Maerim","Sat lunch","084-040-5515"],["todo-kmaison","Ask K Maison for early check-in","Thu by 13:15 · Mo presents 14:00",""],["todo-raya","Confirm Raya airport car","Sun 18:30 pickup",""]];
-  const left=todo.filter(t=>!marks[t[0]]?.done).length;
-  const todoHtml = ti.phase!=="before" ? "" : `<div class="sec"><div class="sh"><span class="lab">Before you go</span></div>
-    ${todo.map(t=>{const dn=!!marks[t[0]]?.done;return `<div class="todo ${dn?"done":""}"><span class="tx"><span class="nm">${esc(t[1])}</span><span class="mt">${esc(t[2])}</span></span>${t[3]?`<button class="copy" data-copy="${t[3]}">${t[3]}</button>`:""}</div>`}).join("")}</div>`;
+  /* status: "ok" = booked, "todo" = still to book/confirm. Update here as things get confirmed. */
+  const books=[
+    ["Thu 22","06:00","Flight FD 3416 · DMK → CNX","Lands 07:10","","ok"],
+    ["Thu 22","07:45","K Maison Lanna · 2 nights","Bag drop ~07:45, early check-in asked","","ok"],
+    ["Thu 22","18:00","Rasik Local Kitchen","Dinner","083-269-6632","todo"],
+    ["Fri 23","12:30","KUSA Japanese","Lunch","","ok"],
+    ["Fri 23","19:30","CHAWEE","Dinner","084-324-9363","todo"],
+    ["Sat 24","12:30","Gongkham Maerim","Lunch","084-040-5515","todo"],
+    ["Sat 24","14:00","Raya Heritage · 1 night","Check-in 14:00, out 12:00","","ok"],
+    ["Sun 25","18:30","Raya airport car","About ฿2,001, to confirm","","todo"],
+    ["Sun 25","20:30","Flight · CNX → DMK","Lands 21:45","","ok"]];
+  const phr=[["พบขี้บ่นแต๊ๆ","พบขี้บ่น","Read aloud when Pob complains about the heat."],["พบบ่เกยสนใจ๋โม","พบไม่เคยสนใจโม","Show this when she's on her phone."],["โมน่าฮักแต๊ๆ","โมน่ารัก","Scientifically proven."],["โมบ่ใช่ลิง","โมไม่ใช่ลิง","For the record. Before Pob says otherwise."],["ลำขนาด","อร่อยมาก","Say it to every khao soi vendor."],["ลำแต๊ๆ","อร่อยจริงๆ","For when ลำขนาด isn't enough."],["กิ๋นข้าวแล้วกา","กินข้าวยัง","Ask Pob every two hours."],["ฮักเจ้าแต๊ๆ","รักจริงๆ นะ","Mo's line. Use daily."],["งามแต๊ๆ","สวยมากๆ","Point at Pob. Then the sunset."],["ม่วนใจ๋","สนุก ใจฟู","How this whole trip should feel."],["เมื่อยแต๊","เหนื่อยมาก","Right after the Ang Kaew run."],["บ่เป็นหยัง","ไม่เป็นไร","When the Grab is 10 min late."],["แอ่วกาด","เที่ยวตลาด","Saturday night at Wualai."],["ยินดีเจ้า","ขอบคุณ","Say it, collect a smile."]];
+  const todoHtml = `<div class="sec"><div class="sh"><span class="lab">Your bookings</span><span class="lab">${books.filter(b=>b[5]==="todo").length?books.filter(b=>b[5]==="todo").length+" to confirm":"All set"}</span></div>
+    <div class="bk">${books.map(b=>`<div class="bkr"><span class="bkd"><b>${esc(b[1])}</b><span>${esc(b[0])}</span></span><span class="tx"><span class="nm">${esc(b[2])}</span><span class="mt">${esc(b[3])}</span></span>${b[4]&&b[5]!=="ok"?`<button class="copy" data-copy="${b[4]}">${b[4]}</button>`:`<span class="chip ${b[5]==="ok"?"ok":"pend"}">${b[5]==="ok"?"Booked":"To confirm"}</span>`}</div>`).join("")}</div></div>
+  <div class="sec"><div class="khead"><h2 class="kt">อู้กำเมือง</h2><span class="ks">พูดเหนือให้เนียน · tap to shout it</span></div>
+    <div class="phr">${phr.map((p,i)=>`<button class="ph" data-phr="${i}"><span class="th${p[0].length>11?" sm":""}">${p[0]}</span><span class="rm">${esc(p[1])}</span><span class="en">${esc(p[2])}</span></button>`).join("")}</div></div>`;
+  window._phr=phr;
   const days=DAYS.map(d=>{const n=d.stops.length, dn=d.stops.filter(s=>marks[s.id]?.done).length;
     return `<button class="dayrow" data-goday="${d.id}"><span class="dd"><b>${d.dn}</b><span>${d.dw}</span></span><span class="tx"><span class="nm">${esc(d.title)}</span><span class="mt">${esc(d.base)}</span></span></button>`}).join("");
   return `<div class="opening" id="opening"><header class="hhead">
@@ -630,8 +763,8 @@ function vPlan(){
         <div class="acts">${XY[s.p]?`<button data-onmap="${s.p}">See on map</button>`:""}${p.q?`<a href="${mapsUrl(s.p)}" target="_blank" rel="noopener">Directions</a>`:""}</div></div>`:""}
       </div></div>`;}).join("");
   const sw=`<div class="pmode" role="tablist" aria-label="View"><button role="tab" data-pmode="list" aria-selected="${S.pmode!=="map"}">List</button><button role="tab" data-pmode="map" aria-selected="${S.pmode==="map"}">Map</button><i class="${S.pmode==="map"?"r":""}"></i></div>`;
-  if(S.pmode==="map") return `<span class="lab">Day ${i+1} · ${esc(d.base)}</span><h1>${splitTitle(d.title)}</h1>${dayTabs()}${sw}${vMap()}`;
-  return `<div class="dayart"><img src="${d.id}.webp" alt="" width="1376" height="768">${CLOUD.replace(/CID/g,"c1")}${CLOUD.replace(/CID/g,"c2")}${CLOUD.replace(/CID/g,"c3")}${d.id==="d3"?`<img class="lt l1" src="ic/lantern.webp" alt=""><img class="lt l2" src="ic/lantern.webp" alt="">`:""}</div><span class="lab">Day ${i+1} · ${esc(d.base)}</span><h1>${splitTitle(d.title)}</h1>${dayTabs()}${sw}<p class="dmeta">${esc(d.sub)}</p><div class="tl">${stops}</div>`;
+  if(S.pmode==="map") return `<span class="lab">Day ${i+1} · ${esc(d.base)}</span><h1 class="dh"><span class="t2">${splitTitle(d.title)}</span></h1>${dayTabs()}${sw}<div class="pvis" id="pvis">${vMap()}</div>`;
+  return `<span class="lab">Day ${i+1} · ${esc(d.base)}</span><h1 class="dh"><span class="t2">${splitTitle(d.title)}</span></h1>${dayTabs()}${sw}<div class="pvis" id="pvis"><div class="dayart"><img src="${d.id}.webp" alt="" width="1376" height="768">${CLOUD.replace(/CID/g,"c1")}${CLOUD.replace(/CID/g,"c2")}${CLOUD.replace(/CID/g,"c3")}${d.id==="d3"?`<img class="lt l1" src="ic/lantern.webp" alt=""><img class="lt l2" src="ic/lantern.webp" alt="">`:""}</div></div><p class="dmeta">${esc(d.sub)}</p><div class="tl">${stops}</div>`;
 }
 function routePts(d){const pts=[];d.stops.forEach(s=>{const xy=XY[s.p];if(xy&&(!pts.length||pts.at(-1).k!==s.p))pts.push({k:s.p,x:xy[0],y:xy[1],s})});return pts}
 function smooth(pts){ if(pts.length<2) return ""; let p=`M${pts[0].x} ${pts[0].y}`;
@@ -680,12 +813,12 @@ function vEats(){
 /* ---------- map camera ---------- */
 let cam=null, flyTok=0;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-function frameH(){const p=$("#pano"); if(!p) return 0; const cw=p.clientWidth; return S.zoomed?Math.min((inDevice()?852:innerHeight)-200,540):Math.min(cw*600/1584,163)+28}
+function frameH(){const p=$("#pano"); if(!p) return 0; const cw=p.clientWidth; return S.zoomed?Math.min((inDevice()?852:innerHeight)-200,540):(innerWidth>=430?211:Math.min(innerWidth*600/1584+48,211))}
 function zIn(){return frameH()/600*1.1}
 function camTo(x,y,z,ms){
   const p=$("#pano"), w=$("#pwrap"); if(!p||!w) return; const cw=p.clientWidth, ch=frameH(), s=Math.max(z,cw/1584);
   let tx=cw/2-x*s, ty=ch*(S.zoomed&&S.sel?0.3:0.5)-y*s; const W=1584*s, H=600*s;
-  tx=W>cw?Math.min(0,Math.max(cw-W,tx)):(cw-W)/2; ty=H>ch?Math.min(0,Math.max(ch-H,ty)):(ch-H)/2;
+  tx=W>cw?Math.min(0,Math.max(cw-W,tx)):(cw-W)/2; ty=H>ch?Math.min(0,Math.max(ch-H,ty)):(ch-H)-4; /* whole-map view: keep the spare room at the top so raised pins aren't clipped */
   w.style.transition=ms&&!reduce?`transform ${ms}ms cubic-bezier(.45,.05,.25,1)`:"none";
   w.style.transform=`translate(${tx}px,${ty}px) scale(${s})`;
   const f=S.zoomed&&S.sel?0.3:0.5; cam={x:(cw/2-tx)/s, y:(ch*f-ty)/s, z};
@@ -760,6 +893,7 @@ function render(anim=true){
   if(v==="home"&&anim) countUp();
   if(v==="home") yiPeng(anim&&!S.festivalShown);
   if(S.editing){const ta=$("#ta"); if(ta){ta.focus();}}
+  requestAnimationFrame(checkStuck);
 }
 function refresh(){ // data changed elsewhere: re-render without replaying entrance animations, keep any draft
   const ta=$("#ta"), draft=ta?ta.value:null, sx=document.getElementById("pano")?.scrollLeft;
@@ -770,7 +904,8 @@ document.addEventListener("click",e=>{
   const t=e.target.closest("button,[data-pin]");
   if(!t) return;
   const ds=t.dataset;
-  if(ds.pmode){ if(S.pmode===ds.pmode) return; S.pmode=ds.pmode; S.zoomed=false; cam=null; S.sel=null; S.open=null; saveUi(); render(); return; }
+  if(ds.phr){ const p=(window._phr||[])[+ds.phr]; if(!p) return; const o=document.createElement("div"); o.className="bigphr"; o.innerHTML=`<div><div class="th">${p[0]}</div><div class="rm">${esc(p[1])}</div><div class="en">${esc(p[2])}</div><small>Tap anywhere to close</small></div>`; o.addEventListener("click",()=>o.remove()); document.body.appendChild(o); return; }
+  if(ds.pmode){ switchMode(ds.pmode); return; }
   if(ds.onmap){ const k=ds.onmap; S.pmode="map"; S.zoomed=false; cam=null; S.sel=null; saveUi(); render(); scrollTop0(); setTimeout(()=>{ S.sel=k; flyToPin(k) },700); return; }
   if(ds.zout){ zoomOut(); return; }
   if(ds.tour){ tour(); return; }
@@ -778,7 +913,7 @@ document.addEventListener("click",e=>{
   if(ds.goday){ S.day=ds.goday; S.view="plan"; S.open=null; saveUi(); render(); scrollTop0(); return; }
   if(ds.todo){ const id=ds.todo; marks[id]={...(marks[id]||{}),done:!marks[id]?.done}; refresh(); if(marks[id].done){ confetti(document.querySelector(`[data-todo="${id}"]`)); toast("One less thing.") } push(id); return; }
   if(ds.go){ const ti=tripInfo(); if(ti.phase==="during") S.day=DAYS[ti.idx].id; S.view=ds.go; saveUi(); render(); scrollTop0(); return; }
-  if(ds.day){ if(S.day===ds.day) return; S.zoomed=false; cam=null; S.day=ds.day; S.open=null; S.editing=null; S.sel=null; saveUi(); render(); return; }
+  if(ds.day){ if(S.day===ds.day) return; S.zoomed=false; cam=null; S.day=ds.day; S.open=null; S.editing=null; S.sel=null; saveUi(); dayChange(); return; }
   if(ds.open){ S.open=S.open===ds.open?null:ds.open; S.editing=null; refresh(); return; }
   if(ds.tick){ const id=ds.tick; marks[id]={...(marks[id]||{}),done:!marks[id]?.done}; refresh(); const el=document.querySelector(`[data-st="${id}"]`); if(el&&marks[id].done){el.classList.add("stamp"); const st=DAYS.flatMap(d=>d.stops).find(x=>x.id===id); confetti(el.querySelector(".dot")); const day=DAYS.find(d=>d.stops.some(x=>x.id===id)); if(day.stops.every(x=>marks[x.id]?.done)){ confetti(el,40); toast(`${day.dw} complete. Legends.`) } else toast(cheer(iconFor(st.p,st.k,st.title))) } push(id); return; }
   if(ds.note){ const id=ds.note;
@@ -797,7 +932,8 @@ document.addEventListener("keydown",e=>{ if((e.key==="Enter"||e.key===" ")&&e.ta
 let sx0=null,sy0=null;
 document.addEventListener("touchstart",e=>{ if(S.view!=="plan"||e.target.closest("textarea,#pano"))return; sx0=e.touches[0].clientX; sy0=e.touches[0].clientY },{passive:true});
 document.addEventListener("touchend",e=>{ if(sx0==null)return; const dx=e.changedTouches[0].clientX-sx0, dy=e.changedTouches[0].clientY-sy0; sx0=null;
-  if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.5){ const i=DAYS.findIndex(d=>d.id===S.day)+(dx<0?1:-1); if(DAYS[i]){S.day=DAYS[i].id;S.open=null;saveUi();render()} } },{passive:true});
+  if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.5){ const i=DAYS.findIndex(d=>d.id===S.day)+(dx<0?1:-1); if(DAYS[i]){S.day=DAYS[i].id;S.open=null;S.zoomed=false;cam=null;S.sel=null;saveUi();dayChange()} } },{passive:true});
 render();
 </script>
+
 </body></html>
