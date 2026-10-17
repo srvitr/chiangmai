@@ -1105,7 +1105,8 @@ document.addEventListener("click",e=>{
   if(ds.ecat){ S.ecat=ds.ecat; refresh(); return; }
   if(ds.allphr){ S.allPhr=!S.allPhr; const y=scroller()===window?scrollY:scroller().scrollTop; refresh(); scroller().scrollTo({top:y}); return; }
   if(ds.grab){ const p=P[ds.grab]; if(!p) return; const txt=p.n;
-    const go=()=>{ toast("Copied “"+txt+"”. Paste it in Grab"); setTimeout(()=>{ location.href="grab://open"; },500); };
+    const ll=LL[ds.grab], url=ll?"grab://open?screenType=BOOKING&taxiTypeId=&dropOffLatitude="+ll[0]+"&dropOffLongitude="+ll[1]+"&dropOffAddress="+encodeURIComponent(txt):"grab://open";
+    const go=()=>{ toast(ll?"Opening Grab with the drop-off set":"Copied “"+txt+"”. Paste it in Grab"); setTimeout(()=>{ location.href=url; },500); };
     try{ navigator.clipboard.writeText(txt).then(go,go); }catch(_){ go(); } return; }
   if(ds.copy){ const v=ds.copy; try{navigator.clipboard.writeText(v).then(()=>toast("Copied"),()=>toast(v))}catch(_){toast(v)} return; }
 });
