@@ -119,7 +119,7 @@ h1 .serif{color:var(--petrol)}
 .st.done .ttl,.st.done .sub{opacity:.45}
 .st.now .dot::before{content:"";position:absolute;inset:-4px;border-radius:50%;background:var(--lime);opacity:.35;animation:pulse 2.2s ease-in-out infinite}
 @keyframes pulse{50%{transform:scale(1.12);opacity:.15}} .st.now .t{color:var(--petrol)}
-.st .hit{text-align:left;width:100%;min-width:0}
+.st .hit{display:block;text-align:left;width:100%;min-width:0}
 .fwrap{margin:10px 0 0;border-radius:20px;overflow:hidden;background:#F1EBE1;box-shadow:0 1px 0 rgba(43,26,23,.05)}
 .fmap{display:block;width:100%;height:auto;aspect-ratio:1.05}
 .fcomp{margin-top:12px;border-radius:18px}
@@ -184,7 +184,7 @@ h1 .serif{color:var(--petrol)}
 .pnow{background:var(--lime);color:#2B1A17}
 .pnext{background:#F0E2DF;color:var(--petrol)}
 .st.stnext .dot::before{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px dashed rgba(122,30,44,.35)}
-.st:not(.open) .sub{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.st:not(.open) .sub{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .acts .grab{background:#00B14F;color:#fff;padding:0 16px;border-radius:22px;min-height:40px;align-self:center}
 
 .ttl{font-weight:500;transition:opacity .3s}
