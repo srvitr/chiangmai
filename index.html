@@ -68,8 +68,9 @@ html[data-vt="back"]::view-transition-old(root){animation-name:vtOutR}
 html[data-vt="back"]::view-transition-new(root){animation-name:vtInL}
 .pbody{view-transition-name:pbody}
 html .dtabs{view-transition-name:dtabs}
-::view-transition-old(dtabs),::view-transition-new(dtabs){animation-duration:.12s}
-html[data-vt="dfwd"]::view-transition-old(root),html[data-vt="dfwd"]::view-transition-new(root),html[data-vt="dback"]::view-transition-old(root),html[data-vt="dback"]::view-transition-new(root){animation-duration:.12s}
+/* day change: everything except the itinerary swaps instantly (no cross-fade flicker on the header, tabs or title bar) */
+html[data-vt="dfwd"]::view-transition-old(root),html[data-vt="dback"]::view-transition-old(root),html[data-vt="dfwd"]::view-transition-old(dtabs),html[data-vt="dback"]::view-transition-old(dtabs),html[data-vt="dfwd"]::view-transition-old(navbar),html[data-vt="dback"]::view-transition-old(navbar){display:none}
+html[data-vt="dfwd"]::view-transition-new(root),html[data-vt="dback"]::view-transition-new(root),html[data-vt="dfwd"]::view-transition-new(dtabs),html[data-vt="dback"]::view-transition-new(dtabs),html[data-vt="dfwd"]::view-transition-new(navbar),html[data-vt="dback"]::view-transition-new(navbar){animation:none}
 html[data-vt="dfwd"]::view-transition-old(pbody){animation:vtOutL .3s cubic-bezier(.2,.8,.2,1) both}
 html[data-vt="dfwd"]::view-transition-new(pbody){animation:vtInR .3s cubic-bezier(.2,.8,.2,1) both}
 html[data-vt="dback"]::view-transition-old(pbody){animation:vtOutR .3s cubic-bezier(.2,.8,.2,1) both}
@@ -1341,7 +1342,7 @@ function vt(fn,dir){ if(!document.startViewTransition||reduce){ fn(); return; }
 /* changing day: the header and date tabs stay put, only the itinerary below slides */
 function dayGo(prev){ haptic(); const fwd=DAYS.findIndex(d=>d.id===S.day)>DAYS.findIndex(d=>d.id===prev);
   const sc=scroller(), keep=sc===window?scrollY:sc.scrollTop;
-  if(document.startViewTransition&&!reduce){ vt(()=>{ render(false); sc.scrollTo({top:keep}); }, fwd?"dfwd":"dback"); return; }
+  if(document.startViewTransition&&!reduce){ vt(()=>{ render(false); sc.scrollTo({top:keep}); checkStuck(); updNav(); }, fwd?"dfwd":"dback"); return; }
   render(false); sc.scrollTo({top:keep}); const pb=$("#app .pbody"); if(!pb||reduce) return;
   pb.style.transition="none"; pb.style.opacity="0"; pb.style.transform=`translateX(${fwd?40:-40}px)`;
   requestAnimationFrame(()=>requestAnimationFrame(()=>{ pb.style.transition="opacity .3s ease, transform .35s cubic-bezier(.2,.8,.2,1)"; pb.style.opacity="1"; pb.style.transform="none"; }));
