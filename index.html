@@ -56,9 +56,9 @@ html .dtabs,html .echips{top:calc(var(--sa) + var(--nav,0px))}
 #boot.out{opacity:0;pointer-events:none}
 @media (display-mode: standalone){ #boot{display:block} }
 /* compact title bar that appears once the big title scrolls away */
-.navbar{position:fixed;left:0;right:0;top:0;z-index:25;padding-top:var(--sa);height:calc(44px + var(--sa));box-sizing:border-box;display:flex;align-items:flex-end;justify-content:center;background:rgba(246,241,233,.86);-webkit-backdrop-filter:saturate(1.6) blur(18px);backdrop-filter:saturate(1.6) blur(18px);border-bottom:.5px solid rgba(43,26,23,.12);opacity:0;transform:translateY(-6px);transition:opacity .2s ease,transform .2s ease;pointer-events:none;view-transition-name:navbar}
-.navbar:not(.on){visibility:hidden;transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
-.navbar.on{opacity:1;transform:none}
+.navbar{position:fixed;left:0;right:0;top:0;z-index:25;padding-top:var(--sa);height:calc(44px + var(--sa));box-sizing:border-box;display:none;align-items:flex-end;justify-content:center;background:rgba(246,241,233,.94);border-bottom:.5px solid rgba(43,26,23,.12);pointer-events:none}
+.navbar.on{display:flex;-webkit-backdrop-filter:saturate(1.6) blur(18px);backdrop-filter:saturate(1.6) blur(18px);animation:navIn .2s ease both}
+@keyframes navIn{from{opacity:0;transform:translateY(-6px)}}
 .navbar span{height:44px;line-height:44px;font-weight:600;font-size:17px;color:var(--ink);max-width:70%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* native-style view transitions (iOS 18+) */
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.3s;animation-timing-function:cubic-bezier(.2,.8,.2,1)}
