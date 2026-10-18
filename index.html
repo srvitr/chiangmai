@@ -1275,7 +1275,7 @@ function render(anim=true){
   if(v==="home"&&anim) countUp();
   if(v==="home") yiPeng(anim&&!S.festivalShown);
   if(S.editing){const ta=$("#ta"); if(ta){ta.focus();}}
-  requestAnimationFrame(checkStuck); requestAnimationFrame(updNav);
+  checkStuck(); updNav(); requestAnimationFrame(checkStuck); requestAnimationFrame(updNav);
   if(v==="plan"&&S.pmode!=="map"&&!S.autoScrolled){ const tgt=document.querySelector(".st.now,.st.stnext"); if(tgt){ S.autoScrolled=true; setTimeout(()=>{ const sc=scroller(), off=sc===window?0:sc.getBoundingClientRect().top, base=sc===window?scrollY:sc.scrollTop; sc.scrollTo({top:Math.max(0,tgt.getBoundingClientRect().top-off+base-150),behavior:reduce?"auto":"smooth"}); },450); } }
 }
 function refresh(){ // data changed elsewhere: re-render without replaying entrance animations, keep any draft
