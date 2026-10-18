@@ -66,7 +66,11 @@ html[data-vt="fwd"]::view-transition-old(root){animation-name:vtOutL}
 html[data-vt="fwd"]::view-transition-new(root){animation-name:vtInR}
 html[data-vt="back"]::view-transition-old(root){animation-name:vtOutR}
 html[data-vt="back"]::view-transition-new(root){animation-name:vtInL}
-#app section.view{overflow-x:clip}
+/* the itinerary slides inside its own clipped box, so nothing pinned (date tabs, chips) sits inside a clipped parent */
+/* chip row: soft fade at the edges instead of a hard cut */
+html .echips{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 36px),transparent);scroll-padding-inline:24px}
+html .echips::after{content:"";flex:0 0 12px}
+.itwrap{position:relative;overflow:hidden;margin-inline:calc(-1 * max(24px,env(safe-area-inset-left,0px)));padding-inline:max(24px,env(safe-area-inset-left,0px))}
 html[data-vt="fade"]::view-transition-old(root),html[data-vt="fade"]::view-transition-new(root){animation-duration:.2s}
 @keyframes vtInR{from{transform:translateX(28%);opacity:0}}
 @keyframes vtOutL{to{transform:translateX(-14%);opacity:0}}
@@ -146,8 +150,8 @@ h1 .serif{color:var(--petrol)}
 .opening+.next{margin-top:16px}
 .opening+.nownext{margin-top:16px}
 
-.herobox{position:relative;margin:18px calc(-1 * max(24px,env(safe-area-inset-right,0px))) 0 calc(-1 * max(24px,env(safe-area-inset-left,0px)));background:transparent;overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent,#000 9%,#000 91%,transparent),linear-gradient(to bottom,transparent,#000 9%,#000 91%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent,#000 9%,#000 91%,transparent),linear-gradient(to bottom,transparent,#000 9%,#000 91%,transparent);mask-composite:intersect}
-.heroimg{display:block;width:100%;height:auto;animation:fadein .8s .1s ease both}
+.herobox{position:relative;margin:18px calc(-1 * max(24px,env(safe-area-inset-right,0px))) 0 calc(-1 * max(24px,env(safe-area-inset-left,0px)));background:transparent;overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent,#000 16%,#000 84%,transparent),linear-gradient(to bottom,transparent,#000 16%,#000 84%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent,#000 16%,#000 84%,transparent),linear-gradient(to bottom,transparent,#000 16%,#000 84%,transparent);mask-composite:intersect}
+.heroimg{display:block;width:100%;height:auto;animation:fadein .8s .1s ease both;mix-blend-mode:multiply}
 .herobox:not(.trip){margin-top:4px}
 .herobox:not(.trip) .heroimg{height:min(232px,62vw);object-fit:cover;object-position:center 62%}
 .herobox:not(.trip) .count{top:6px}
@@ -944,8 +948,9 @@ document.addEventListener("click",e=>{ const box=e.target.closest(".dayart"); if
 let stuckTop=null;
 function checkStuck(){ const t=document.querySelector(".dtabs"); if(!t) return; const sc=scroller(), top=sc===window?0:sc.getBoundingClientRect().top+54;
   if(stuckTop==null) stuckTop=parseFloat(getComputedStyle(t).top)||0;
-  const pinned=t.getBoundingClientRect().top<=top+stuckTop+1 && (sc===window?scrollY:sc.scrollTop)>20;
-  if(pinned!==t.classList.contains("stuck")) t.classList.toggle("stuck",pinned); }
+  const was=t.classList.contains("stuck"), rt=t.getBoundingClientRect().top, y=sc===window?scrollY:sc.scrollTop;
+  const pinned=was?(rt<=top+stuckTop+6&&y>12):(rt<=top+stuckTop+1&&y>20);
+  if(pinned!==was) t.classList.toggle("stuck",pinned); }
 let scRAF=0; const onScroll=()=>{ if(!scRAF) scRAF=requestAnimationFrame(()=>{ scRAF=0; updNav(); checkStuck(); }); };
 addEventListener("scroll",onScroll,{passive:true}); document.getElementById("screen")?.addEventListener("scroll",onScroll,{passive:true});
 addEventListener("resize",()=>{ stuckTop=null; navTop=null; });
@@ -1164,7 +1169,7 @@ function vPlan(){
         ${ed?`<textarea id="ta" placeholder="A note for both of you…">${esc(m.note||"")}</textarea>`:""}
         <div class="acts">${p.q&&!/^(cnx)$/.test(s.p)?`<button class="grab" data-grab="${s.p}">Grab here</button>`:""}${p.q?`<a href="${mapsUrl(s.p)}" target="_blank" rel="noopener">Directions</a>`:""}</div></div>`:""}
       </div></div>`;}).join("");
-  return `<span class="lab">Day ${i+1} · ${esc(d.base)}</span><h1 class="dh"><span class="t2">${splitTitle(d.title)}</span></h1>${dayTabs()}<div class="pbody"><div class="pvis" id="pvis">${vMapFlat(true)}</div><p class="dmeta">${esc(d.sub)}</p>${isPastDay?"":wxDay(d)}${isToday&&nxt?lateBar(d):""}${isToday||isPastDay?`<div class="dprog"><div class="bar"><i style="width:${Math.round(doneN/d.stops.length*100)}%"></i></div><span>${doneN} of ${d.stops.length} done</span></div>`:""}<div class="tl">${stops}</div></div>`;
+  return `<span class="lab">Day ${i+1} · ${esc(d.base)}</span><h1 class="dh"><span class="t2">${splitTitle(d.title)}</span></h1>${dayTabs()}<div class="itwrap"><div class="pbody"><div class="pvis" id="pvis">${vMapFlat(true)}</div><p class="dmeta">${esc(d.sub)}</p>${isPastDay?"":wxDay(d)}${isToday&&nxt?lateBar(d):""}${isToday||isPastDay?`<div class="dprog"><div class="bar"><i style="width:${Math.round(doneN/d.stops.length*100)}%"></i></div><span>${doneN} of ${d.stops.length} done</span></div>`:""}<div class="tl">${stops}</div></div></div>`;
 }
 function routePts(d){const pts=[];d.stops.forEach(s=>{const xy=XY[s.p];if(xy&&(!pts.length||pts.at(-1).k!==s.p))pts.push({k:s.p,x:xy[0],y:xy[1],s})});return pts}
 function smooth(pts){ if(pts.length<2) return ""; let p=`M${pts[0].x} ${pts[0].y}`;
@@ -1343,7 +1348,7 @@ function dayGo(prev){ haptic(); const fwd=DAYS.findIndex(d=>d.id===S.day)>DAYS.f
   let ghost=null; if(old&&!reduce&&old.animate){ ghost=old.cloneNode(true); ghost.querySelectorAll("[id]").forEach(e=>e.removeAttribute("id")); }
   render(false); sc.scrollTo({top:keep});
   const pb=$("#app .pbody"); if(!pb||!ghost) return;
-  const host=pb.parentElement; if(getComputedStyle(host).position==="static") host.style.position="relative";
+  const host=pb.parentElement;
   ghost.setAttribute("aria-hidden","true"); ghost.style.cssText=`position:absolute;left:${pb.offsetLeft}px;top:${pb.offsetTop}px;width:${pb.offsetWidth}px;margin:0;pointer-events:none`;
   host.insertBefore(ghost,pb);
   const ease="cubic-bezier(.2,.8,.2,1)";
