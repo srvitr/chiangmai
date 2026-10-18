@@ -66,15 +66,7 @@ html[data-vt="fwd"]::view-transition-old(root){animation-name:vtOutL}
 html[data-vt="fwd"]::view-transition-new(root){animation-name:vtInR}
 html[data-vt="back"]::view-transition-old(root){animation-name:vtOutR}
 html[data-vt="back"]::view-transition-new(root){animation-name:vtInL}
-.pbody{view-transition-name:pbody}
-html .dtabs{view-transition-name:dtabs}
-/* day change: everything except the itinerary swaps instantly (no cross-fade flicker on the header, tabs or title bar) */
-html[data-vt="dfwd"]::view-transition-old(root),html[data-vt="dback"]::view-transition-old(root),html[data-vt="dfwd"]::view-transition-old(dtabs),html[data-vt="dback"]::view-transition-old(dtabs),html[data-vt="dfwd"]::view-transition-old(navbar),html[data-vt="dback"]::view-transition-old(navbar){display:none}
-html[data-vt="dfwd"]::view-transition-new(root),html[data-vt="dback"]::view-transition-new(root),html[data-vt="dfwd"]::view-transition-new(dtabs),html[data-vt="dback"]::view-transition-new(dtabs),html[data-vt="dfwd"]::view-transition-new(navbar),html[data-vt="dback"]::view-transition-new(navbar){animation:none}
-html[data-vt="dfwd"]::view-transition-old(pbody){animation:vtOutL .3s cubic-bezier(.2,.8,.2,1) both}
-html[data-vt="dfwd"]::view-transition-new(pbody){animation:vtInR .3s cubic-bezier(.2,.8,.2,1) both}
-html[data-vt="dback"]::view-transition-old(pbody){animation:vtOutR .3s cubic-bezier(.2,.8,.2,1) both}
-html[data-vt="dback"]::view-transition-new(pbody){animation:vtInL .3s cubic-bezier(.2,.8,.2,1) both}
+#app section.view{overflow-x:clip}
 html[data-vt="fade"]::view-transition-old(root),html[data-vt="fade"]::view-transition-new(root){animation-duration:.2s}
 @keyframes vtInR{from{transform:translateX(28%);opacity:0}}
 @keyframes vtOutL{to{transform:translateX(-14%);opacity:0}}
@@ -1339,14 +1331,18 @@ document.addEventListener("touchend",e=>{ bandBack(); if(sx0==null)return; const
 function vt(fn,dir){ if(!document.startViewTransition||reduce){ fn(); return; }
   const h=document.documentElement; h.dataset.vt=dir||"fade";
   try{ const t=document.startViewTransition(fn); t.finished.finally(()=>{ if(h.dataset.vt===(dir||"fade")) delete h.dataset.vt; }); }catch(_){ delete h.dataset.vt; fn(); } }
-/* changing day: the header and date tabs stay put, only the itinerary below slides */
-function dayGo(prev){ haptic(); const fwd=DAYS.findIndex(d=>d.id===S.day)>DAYS.findIndex(d=>d.id===prev);
-  const sc=scroller(), keep=sc===window?scrollY:sc.scrollTop;
-  if(document.startViewTransition&&!reduce){ vt(()=>{ render(false); sc.scrollTo({top:keep}); checkStuck(); updNav(); }, fwd?"dfwd":"dback"); return; }
-  render(false); sc.scrollTo({top:keep}); const pb=$("#app .pbody"); if(!pb||reduce) return;
-  pb.style.transition="none"; pb.style.opacity="0"; pb.style.transform=`translateX(${fwd?40:-40}px)`;
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{ pb.style.transition="opacity .3s ease, transform .35s cubic-bezier(.2,.8,.2,1)"; pb.style.opacity="1"; pb.style.transform="none"; }));
-  setTimeout(()=>{ pb.style.transition=""; pb.style.transform=""; pb.style.opacity=""; },400); }
+/* changing day: the header and date tabs never move; the old itinerary slides out, the new one slides in (plain animations, no view transition) */
+function dayGo(prev){ haptic(); const fwd=DAYS.findIndex(d=>d.id===S.day)>DAYS.findIndex(d=>d.id===prev), dir=fwd?1:-1;
+  const sc=scroller(), keep=sc===window?scrollY:sc.scrollTop, old=$("#app .pbody");
+  let ghost=null; if(old&&!reduce&&old.animate){ ghost=old.cloneNode(true); ghost.querySelectorAll("[id]").forEach(e=>e.removeAttribute("id")); }
+  render(false); sc.scrollTo({top:keep});
+  const pb=$("#app .pbody"); if(!pb||!ghost) return;
+  const host=pb.parentElement; if(getComputedStyle(host).position==="static") host.style.position="relative";
+  ghost.setAttribute("aria-hidden","true"); ghost.style.cssText=`position:absolute;left:${pb.offsetLeft}px;top:${pb.offsetTop}px;width:${pb.offsetWidth}px;margin:0;pointer-events:none`;
+  host.insertBefore(ghost,pb);
+  const ease="cubic-bezier(.2,.8,.2,1)";
+  ghost.animate([{transform:"none",opacity:1},{transform:`translateX(${-dir*22}%)`,opacity:0}],{duration:260,easing:ease,fill:"forwards"}).onfinish=()=>ghost.remove();
+  pb.animate([{transform:`translateX(${dir*28}%)`,opacity:0},{transform:"none",opacity:1}],{duration:320,easing:ease}); }
 /* haptics: Android vibrate; iOS 18 ticks when a hidden switch is toggled */
 let HAP=null;
 function haptic(){ try{ if(navigator.vibrate){ navigator.vibrate(8); return; }
