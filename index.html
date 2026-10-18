@@ -68,8 +68,8 @@ html[data-vt="back"]::view-transition-old(root){animation-name:vtOutR}
 html[data-vt="back"]::view-transition-new(root){animation-name:vtInL}
 /* the itinerary slides inside its own clipped box, so nothing pinned (date tabs, chips) sits inside a clipped parent */
 /* chip row: soft fade at the edges instead of a hard cut */
-html .echips{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 36px),transparent);scroll-padding-inline:24px}
-html .echips::after{content:"";flex:0 0 12px}
+html .echips::after{content:"";position:sticky;right:calc(-1 * max(24px,env(safe-area-inset-right,0px)));flex:0 0 44px;margin-left:-44px;align-self:stretch;margin-block:-8px;background:linear-gradient(90deg,rgba(246,241,233,0),var(--bg) 80%);pointer-events:none}
+.stk-s{height:1px;margin-bottom:-1px}
 .itwrap{position:relative;overflow:hidden;margin-inline:calc(-1 * max(24px,env(safe-area-inset-left,0px)));padding-inline:max(24px,env(safe-area-inset-left,0px))}
 html[data-vt="fade"]::view-transition-old(root),html[data-vt="fade"]::view-transition-new(root){animation-duration:.2s}
 @keyframes vtInR{from{transform:translateX(28%);opacity:0}}
@@ -151,7 +151,7 @@ h1 .serif{color:var(--petrol)}
 .opening+.nownext{margin-top:16px}
 
 .herobox{position:relative;margin:18px calc(-1 * max(24px,env(safe-area-inset-right,0px))) 0 calc(-1 * max(24px,env(safe-area-inset-left,0px)));background:transparent;overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent,#000 16%,#000 84%,transparent),linear-gradient(to bottom,transparent,#000 16%,#000 84%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent,#000 16%,#000 84%,transparent),linear-gradient(to bottom,transparent,#000 16%,#000 84%,transparent);mask-composite:intersect}
-.heroimg{display:block;width:100%;height:auto;animation:fadein .8s .1s ease both;mix-blend-mode:multiply}
+.heroimg{display:block;width:100%;height:auto;animation:fadein .8s .1s ease both}
 .herobox:not(.trip){margin-top:4px}
 .herobox:not(.trip) .heroimg{height:min(232px,62vw);object-fit:cover;object-position:center 62%}
 .herobox:not(.trip) .count{top:6px}
@@ -951,8 +951,22 @@ function checkStuck(){ const t=document.querySelector(".dtabs"); if(!t) return; 
   const was=t.classList.contains("stuck"), rt=t.getBoundingClientRect().top, y=sc===window?scrollY:sc.scrollTop;
   const pinned=was?(rt<=top+stuckTop+6&&y>12):(rt<=top+stuckTop+1&&y>20);
   if(pinned!==was) t.classList.toggle("stuck",pinned); }
-let scRAF=0; const onScroll=()=>{ if(!scRAF) scRAF=requestAnimationFrame(()=>{ scRAF=0; updNav(); checkStuck(); }); };
-addEventListener("scroll",onScroll,{passive:true}); document.getElementById("screen")?.addEventListener("scroll",onScroll,{passive:true});
+/* no scroll listeners: the browser tells us when the title / date tabs cross the top (zero work per scroll frame) */
+let topObs=[];
+function observeTop(){ topObs.forEach(o=>o.disconnect()); topObs=[]; if(!window.IntersectionObserver) return;
+  const root=scroller()===window?null:document.getElementById("screen"), nb=$("#navbar"), dev=inDevice();
+  const h=document.querySelector("#app h1,#app .hhead");
+  if(nb){ const tt=navTitle(); if(tt!==navTitleNow){ navTitleNow=tt; $("#navtitle").textContent=tt; } }
+  if(nb&&h&&!dev){ if(navTop==null) navTop=parseFloat(getComputedStyle(nb).paddingTop)||0; document.documentElement.style.setProperty("--nav","44px");
+    const o=new IntersectionObserver(es=>{ const e=es[es.length-1]; const on=!e.isIntersecting&&e.boundingClientRect.top<navTop+44; if(on!==nb.classList.contains("on")) nb.classList.toggle("on",on); },{root,rootMargin:`-${Math.round(navTop+44)}px 0px 0px 0px`,threshold:0});
+    o.observe(h); topObs.push(o); }
+  else if(nb){ nb.classList.remove("on"); if(dev) document.documentElement.style.removeProperty("--nav"); }
+  const t=document.querySelector(".dtabs"), sen=document.querySelector(".stk-s");
+  if(t&&sen){ const st=parseFloat(getComputedStyle(t).top)||0, rt=root?root.getBoundingClientRect().top+54:0;
+    const o=new IntersectionObserver(es=>{ const e=es[es.length-1]; const stuck=!e.isIntersecting&&e.boundingClientRect.top<rt+st+6; if(stuck!==t.classList.contains("stuck")) t.classList.toggle("stuck",stuck); },{root,rootMargin:`-${Math.round(st+(root?54:0))}px 0px 0px 0px`,threshold:0});
+    o.observe(sen); topObs.push(o);
+    const now=sen.getBoundingClientRect().top<rt+st; if(now!==t.classList.contains("stuck")) t.classList.toggle("stuck",now); }
+  if(nb&&h&&!dev){ const on=h.getBoundingClientRect().bottom<navTop+44; if(on!==nb.classList.contains("on")) nb.classList.toggle("on",on); } }
 addEventListener("resize",()=>{ stuckTop=null; navTop=null; });
 /* switching day: keep the header and date tabs still, only refresh what's below them */
 function dayChange(){
@@ -1035,7 +1049,7 @@ function vHome(){
     return `<button class="dayrow ${ti.phase==="during"&&DAYS[ti.idx].id===d.id?"today":""}" data-goday="${d.id}"><span class="dd"><b>${d.dn}</b><span>${d.dw}</span></span><span class="tx"><span class="nm">${esc(d.title)}</span><span class="mt">${esc(d.base)}</span></span></button>`}).join("");
   return `<div class="opening" id="opening"><header class="hhead">
     <div class="names"><span>Mo</span><span>&amp;</span><span>Pob</span></div><div class="hrow"><div class="city">in Chiang Mai</div><div class="count tripcount">${count}</div></div></header>
-  <div class="herobox ${ti.phase==="during"?"trip":""}"><img class="heroimg" src="hero-cream.webp" alt="Tiny clay model of Tha Phae Gate with a couple walking hand in hand" width="2048" height="1523"></div><canvas class="yipeng" id="yipeng" aria-hidden="true"></canvas></div>
+  <div class="herobox ${ti.phase==="during"?"trip":""}"><img class="heroimg" src="hero-tint.webp" alt="Tiny clay model of Tha Phae Gate with a couple walking hand in hand" width="2048" height="1523"></div><canvas class="yipeng" id="yipeng" aria-hidden="true"></canvas></div>
   ${next}
   ${todoHtml}
   
@@ -1169,7 +1183,7 @@ function vPlan(){
         ${ed?`<textarea id="ta" placeholder="A note for both of you…">${esc(m.note||"")}</textarea>`:""}
         <div class="acts">${p.q&&!/^(cnx)$/.test(s.p)?`<button class="grab" data-grab="${s.p}">Grab here</button>`:""}${p.q?`<a href="${mapsUrl(s.p)}" target="_blank" rel="noopener">Directions</a>`:""}</div></div>`:""}
       </div></div>`;}).join("");
-  return `<span class="lab">Day ${i+1} · ${esc(d.base)}</span><h1 class="dh"><span class="t2">${splitTitle(d.title)}</span></h1>${dayTabs()}<div class="itwrap"><div class="pbody"><div class="pvis" id="pvis">${vMapFlat(true)}</div><p class="dmeta">${esc(d.sub)}</p>${isPastDay?"":wxDay(d)}${isToday&&nxt?lateBar(d):""}${isToday||isPastDay?`<div class="dprog"><div class="bar"><i style="width:${Math.round(doneN/d.stops.length*100)}%"></i></div><span>${doneN} of ${d.stops.length} done</span></div>`:""}<div class="tl">${stops}</div></div></div>`;
+  return `<span class="lab">Day ${i+1} · ${esc(d.base)}</span><h1 class="dh"><span class="t2">${splitTitle(d.title)}</span></h1><div class="stk-s" aria-hidden="true"></div>${dayTabs()}<div class="itwrap"><div class="pbody"><div class="pvis" id="pvis">${vMapFlat(true)}</div><p class="dmeta">${esc(d.sub)}</p>${isPastDay?"":wxDay(d)}${isToday&&nxt?lateBar(d):""}${isToday||isPastDay?`<div class="dprog"><div class="bar"><i style="width:${Math.round(doneN/d.stops.length*100)}%"></i></div><span>${doneN} of ${d.stops.length} done</span></div>`:""}<div class="tl">${stops}</div></div></div>`;
 }
 function routePts(d){const pts=[];d.stops.forEach(s=>{const xy=XY[s.p];if(xy&&(!pts.length||pts.at(-1).k!==s.p))pts.push({k:s.p,x:xy[0],y:xy[1],s})});return pts}
 function smooth(pts){ if(pts.length<2) return ""; let p=`M${pts[0].x} ${pts[0].y}`;
@@ -1278,7 +1292,7 @@ function render(anim=true){
   if(v==="home"&&anim) countUp();
   if(v==="home") yiPeng(anim&&!S.festivalShown);
   if(S.editing){const ta=$("#ta"); if(ta){ta.focus();}}
-  stuckTop=null; updNav(); checkStuck();
+  observeTop();
   if(v==="plan"&&S.pmode!=="map"&&!S.autoScrolled){ const tgt=document.querySelector(".st.now,.st.stnext"); if(tgt){ S.autoScrolled=true; setTimeout(()=>{ const sc=scroller(), off=sc===window?0:sc.getBoundingClientRect().top, base=sc===window?scrollY:sc.scrollTop; sc.scrollTo({top:Math.max(0,tgt.getBoundingClientRect().top-off+base-150),behavior:reduce?"auto":"smooth"}); },450); } }
 }
 function refresh(){ // data changed elsewhere: re-render without replaying entrance animations, keep any draft

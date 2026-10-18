@@ -1,5 +1,5 @@
-const V="cm-c4ea041509";
-const PRE=["fonts/anuphan.woff2", "fonts/dmmono-400.woff2", "fonts/dmmono-500.woff2", "fonts/isans.woff2", "fonts/iserif-i.woff2", "fonts/iserif.woff2", "fonts/mali-500.woff2", "fonts/mali-600.woff2", "hero-cream.webp", "ic/coffee.webp", "ic/croissant.webp", "ic/khaosoi.webp", "ic/lantern-hd.webp", "ic/lantern.webp", "ic/lounger.webp", "ic/pizza.webp", "ic/plane.webp", "ic/songthaew.webp", "ic/suitcase.webp", "ic/sushi.webp", "ic/temple.webp", "ic/wine.webp", "icon-180.png", "icon-192.png", "icon-512.png", "manifest.json", "splash/art.jpg", "index.html"];
+const V="cm-0df4e1c7e0";
+const PRE=["fonts/anuphan.woff2", "fonts/dmmono-400.woff2", "fonts/dmmono-500.woff2", "fonts/isans.woff2", "fonts/iserif-i.woff2", "fonts/iserif.woff2", "fonts/mali-500.woff2", "fonts/mali-600.woff2", "hero-tint.webp", "ic/coffee.webp", "ic/croissant.webp", "ic/khaosoi.webp", "ic/lantern-hd.webp", "ic/lantern.webp", "ic/lounger.webp", "ic/pizza.webp", "ic/plane.webp", "ic/songthaew.webp", "ic/suitcase.webp", "ic/sushi.webp", "ic/temple.webp", "ic/wine.webp", "icon-180.png", "icon-192.png", "icon-512.png", "manifest.json", "splash/art.jpg", "index.html"];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(PRE.map(f=>f==="index.html"?"./":f))).then(()=>self.skipWaiting()))});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==V).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener("fetch",e=>{
