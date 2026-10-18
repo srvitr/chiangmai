@@ -1,7 +1,7 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Chiang Mai">
+<meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Chiang Mai">
 <meta name="theme-color" content="#F6F1E9"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon-192.png"><link rel="manifest" href="manifest.json">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}html{-webkit-text-size-adjust:100%}</style>
 <link rel="apple-touch-startup-image" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/launch-1290x2796.png">
@@ -54,9 +54,10 @@ html .dtabs,html .echips{top:calc(var(--sa) + var(--nav,0px))}
 #boot .bt{position:absolute;left:0;right:0;top:80%;transform:translateY(-50%);text-align:center;font-family:var(--serif);font-style:italic;font-size:11cqw;color:#F6F1E9}
 #boot .bs{position:absolute;left:0;right:0;top:86%;transform:translateY(-50%);text-align:center;font-family:var(--sans);font-size:4cqw;color:rgba(246,241,233,.7);letter-spacing:.02em}
 #boot.out{opacity:0;pointer-events:none}
-@media (display-mode: standalone){ .sbstrip{display:block} #boot{display:block} }
+@media (display-mode: standalone){ #boot{display:block} }
 /* compact title bar that appears once the big title scrolls away */
 .navbar{position:fixed;left:0;right:0;top:0;z-index:25;padding-top:var(--sa);height:calc(44px + var(--sa));box-sizing:border-box;display:flex;align-items:flex-end;justify-content:center;background:rgba(246,241,233,.86);-webkit-backdrop-filter:saturate(1.6) blur(18px);backdrop-filter:saturate(1.6) blur(18px);border-bottom:.5px solid rgba(43,26,23,.12);opacity:0;transform:translateY(-6px);transition:opacity .2s ease,transform .2s ease;pointer-events:none;view-transition-name:navbar}
+.navbar:not(.on){visibility:hidden;transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
 .navbar.on{opacity:1;transform:none}
 .navbar span{height:44px;line-height:44px;font-weight:600;font-size:17px;color:var(--ink);max-width:70%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* native-style view transitions (iOS 18+) */
@@ -65,6 +66,14 @@ html[data-vt="fwd"]::view-transition-old(root){animation-name:vtOutL}
 html[data-vt="fwd"]::view-transition-new(root){animation-name:vtInR}
 html[data-vt="back"]::view-transition-old(root){animation-name:vtOutR}
 html[data-vt="back"]::view-transition-new(root){animation-name:vtInL}
+.pbody{view-transition-name:pbody}
+html .dtabs{view-transition-name:dtabs}
+::view-transition-old(dtabs),::view-transition-new(dtabs){animation-duration:.12s}
+html[data-vt="dfwd"]::view-transition-old(root),html[data-vt="dfwd"]::view-transition-new(root),html[data-vt="dback"]::view-transition-old(root),html[data-vt="dback"]::view-transition-new(root){animation-duration:.12s}
+html[data-vt="dfwd"]::view-transition-old(pbody){animation:vtOutL .3s cubic-bezier(.2,.8,.2,1) both}
+html[data-vt="dfwd"]::view-transition-new(pbody){animation:vtInR .3s cubic-bezier(.2,.8,.2,1) both}
+html[data-vt="dback"]::view-transition-old(pbody){animation:vtOutR .3s cubic-bezier(.2,.8,.2,1) both}
+html[data-vt="dback"]::view-transition-new(pbody){animation:vtInL .3s cubic-bezier(.2,.8,.2,1) both}
 html[data-vt="fade"]::view-transition-old(root),html[data-vt="fade"]::view-transition-new(root){animation-duration:.2s}
 @keyframes vtInR{from{transform:translateX(28%);opacity:0}}
 @keyframes vtOutL{to{transform:translateX(-14%);opacity:0}}
@@ -564,7 +573,6 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:none}
 </style>
 
 <div id="boot" aria-hidden="true"><img src="splash/art.jpg" alt=""><div class="bt">Mo &amp; Pob</div><div class="bs">Chiang Mai · 22–25 Oct</div></div>
-<div class="sbstrip" aria-hidden="true"></div>
 <div class="device" id="device"><div class="island" aria-hidden="true"></div>
 <div class="sbar" aria-hidden="true"><span class="sbt" id="sbt">9:41</span><span class="sbi"><svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.3-1.4A10.6 10.6 0 0 0 8 .2 10.6 10.6 0 0 0 .7 3.2L2 4.6a8.6 8.6 0 0 1 6-2.4zm0 3.8c1.3 0 2.5.5 3.4 1.3l1.3-1.4A7 7 0 0 0 8 4a7 7 0 0 0-4.7 1.9l1.3 1.4A5 5 0 0 1 8 6zm0 3.6 2-2.1a3 3 0 0 0-4 0z"/></svg><span class="batt"><i></i></span></span></div>
 <div class="screen" id="screen"><main class="app" id="app"></main></div>
@@ -1157,7 +1165,7 @@ function vPlan(){
         ${ed?`<textarea id="ta" placeholder="A note for both of you…">${esc(m.note||"")}</textarea>`:""}
         <div class="acts">${p.q&&!/^(cnx)$/.test(s.p)?`<button class="grab" data-grab="${s.p}">Grab here</button>`:""}${p.q?`<a href="${mapsUrl(s.p)}" target="_blank" rel="noopener">Directions</a>`:""}</div></div>`:""}
       </div></div>`;}).join("");
-  return `<span class="lab">Day ${i+1} · ${esc(d.base)}</span><h1 class="dh"><span class="t2">${splitTitle(d.title)}</span></h1>${dayTabs()}<div class="pvis" id="pvis">${vMapFlat(true)}</div><p class="dmeta">${esc(d.sub)}</p>${isPastDay?"":wxDay(d)}${isToday&&nxt?lateBar(d):""}${isToday||isPastDay?`<div class="dprog"><div class="bar"><i style="width:${Math.round(doneN/d.stops.length*100)}%"></i></div><span>${doneN} of ${d.stops.length} done</span></div>`:""}<div class="tl">${stops}</div>`;
+  return `<span class="lab">Day ${i+1} · ${esc(d.base)}</span><h1 class="dh"><span class="t2">${splitTitle(d.title)}</span></h1>${dayTabs()}<div class="pbody"><div class="pvis" id="pvis">${vMapFlat(true)}</div><p class="dmeta">${esc(d.sub)}</p>${isPastDay?"":wxDay(d)}${isToday&&nxt?lateBar(d):""}${isToday||isPastDay?`<div class="dprog"><div class="bar"><i style="width:${Math.round(doneN/d.stops.length*100)}%"></i></div><span>${doneN} of ${d.stops.length} done</span></div>`:""}<div class="tl">${stops}</div></div>`;
 }
 function routePts(d){const pts=[];d.stops.forEach(s=>{const xy=XY[s.p];if(xy&&(!pts.length||pts.at(-1).k!==s.p))pts.push({k:s.p,x:xy[0],y:xy[1],s})});return pts}
 function smooth(pts){ if(pts.length<2) return ""; let p=`M${pts[0].x} ${pts[0].y}`;
@@ -1318,10 +1326,10 @@ wxLoad(); document.addEventListener("visibilitychange",()=>{ if(!document.hidden
 let sx0=null,sy0=null;
 document.addEventListener("touchstart",e=>{ if(S.view!=="plan"||e.target.closest("textarea,#pano,.sheet")||e.touches[0].clientX<24){ sx0=null; return; } sx0=e.touches[0].clientX; sy0=e.touches[0].clientY },{passive:true});
 document.addEventListener("touchmove",e=>{ if(sx0==null||S.view!=="plan") return; const dx=e.touches[0].clientX-sx0, dy=e.touches[0].clientY-sy0;
-  if(Math.abs(dx)<12||Math.abs(dx)<Math.abs(dy)*1.3) return; const i=DAYS.findIndex(d=>d.id===S.day), sec=$("#app section"); if(!sec) return;
+  if(Math.abs(dx)<12||Math.abs(dx)<Math.abs(dy)*1.3) return; const i=DAYS.findIndex(d=>d.id===S.day), sec=$("#app .pbody"); if(!sec) return;
   const atEnd=(dx>0&&i===0)||(dx<0&&i===DAYS.length-1); if(!atEnd) return;
   sec.style.transition="none"; sec.style.transform=`translateX(${Math.sign(dx)*rband(Math.abs(dx))}px)`; sec.dataset.band="1"; },{passive:true});
-function bandBack(){ const sec=$("#app section"); if(!sec||!sec.dataset.band) return; delete sec.dataset.band;
+function bandBack(){ const sec=$("#app .pbody"); if(!sec||!sec.dataset.band) return; delete sec.dataset.band;
   sec.style.transition="transform .45s cubic-bezier(.2,1.4,.4,1)"; sec.style.transform=""; setTimeout(()=>{ sec.style.transition=""; },460); }
 document.addEventListener("touchend",e=>{ bandBack(); if(sx0==null)return; const dx=e.changedTouches[0].clientX-sx0, dy=e.changedTouches[0].clientY-sy0; sx0=null;
   if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.5){ const i=DAYS.findIndex(d=>d.id===S.day)+(dx<0?1:-1); if(DAYS[i]){const prev=S.day;S.day=DAYS[i].id;S.open=null;S.zoomed=false;cam=null;S.sel=null;saveUi();dayGo(prev)} } },{passive:true});
@@ -1330,10 +1338,14 @@ document.addEventListener("touchend",e=>{ bandBack(); if(sx0==null)return; const
 function vt(fn,dir){ if(!document.startViewTransition||reduce){ fn(); return; }
   const h=document.documentElement; h.dataset.vt=dir||"fade";
   try{ const t=document.startViewTransition(fn); t.finished.finally(()=>{ if(h.dataset.vt===(dir||"fade")) delete h.dataset.vt; }); }catch(_){ delete h.dataset.vt; fn(); } }
-function dayGo(prev){ const a=DAYS.findIndex(d=>d.id===prev), b=DAYS.findIndex(d=>d.id===S.day); haptic();
-  if(!document.startViewTransition||reduce){ dayChange(); return; }
+/* changing day: the header and date tabs stay put, only the itinerary below slides */
+function dayGo(prev){ haptic(); const fwd=DAYS.findIndex(d=>d.id===S.day)>DAYS.findIndex(d=>d.id===prev);
   const sc=scroller(), keep=sc===window?scrollY:sc.scrollTop;
-  vt(()=>{ render(false); sc.scrollTo({top:keep}); }, b>a?"fwd":"back"); }
+  if(document.startViewTransition&&!reduce){ vt(()=>{ render(false); sc.scrollTo({top:keep}); }, fwd?"dfwd":"dback"); return; }
+  render(false); sc.scrollTo({top:keep}); const pb=$("#app .pbody"); if(!pb||reduce) return;
+  pb.style.transition="none"; pb.style.opacity="0"; pb.style.transform=`translateX(${fwd?40:-40}px)`;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{ pb.style.transition="opacity .3s ease, transform .35s cubic-bezier(.2,.8,.2,1)"; pb.style.opacity="1"; pb.style.transform="none"; }));
+  setTimeout(()=>{ pb.style.transition=""; pb.style.transform=""; pb.style.opacity=""; },400); }
 /* haptics: Android vibrate; iOS 18 ticks when a hidden switch is toggled */
 let HAP=null;
 function haptic(){ try{ if(navigator.vibrate){ navigator.vibrate(8); return; }
